@@ -29,8 +29,7 @@ data ThreadsController
     deriving (Eq, Show, Data)
 
 data UsersController
-    = UsersAction
-    | NewUserAction
+    = NewUserAction
     | ShowUserAction { userId :: !(Id User) }
     | CreateUserAction
     | EditUserAction { userId :: !(Id User) }

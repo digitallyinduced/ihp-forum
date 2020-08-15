@@ -1,20 +1,14 @@
 module Web.Controller.Users where
 
 import Web.Controller.Prelude
-import Web.View.Users.Index
 import Web.View.Users.New
 import Web.View.Users.Edit
 import Web.View.Users.Show
-import Web.View.Users.Index
 import Web.View.Users.New
 import Web.View.Users.Show
 import Web.View.Users.Edit
 
 instance Controller UsersController where
-    action UsersAction = do
-        users <- query @User |> fetch
-        render IndexView { .. }
-
     action NewUserAction = do
         let user = newRecord
         render NewView { .. }
@@ -61,10 +55,11 @@ instance Controller UsersController where
                         |> set #passwordHash hashed
                         |> createRecord
                     setSuccessMessage "User created"
-                    redirectTo UsersAction
+                    redirectTo TopicsAction
 
     action DeleteUserAction { userId } = do
+        accessDeniedUnless (userId == currentUserId)
         user <- fetch userId
         deleteRecord user
         setSuccessMessage "User deleted"
-        redirectTo UsersAction
+        redirectTo TopicsAction
