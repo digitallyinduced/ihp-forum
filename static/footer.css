@@ -1,0 +1,27 @@
+
+footer a {
+    color: hsla(196, 13%, 80%, 1);
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 4px;
+    font-size: 9px;
+}
+
+footer a:last-child {
+    margin-left: 16px;
+}
+
+@media (min-width: 860px) {
+    footer a {
+        margin-right: 1rem;
+        font-size: 1rem;
+    }
+
+    footer a:last-child {
+        float: right;
+    }
+}
+
+footer {
+    margin-top: auto !important;
+}

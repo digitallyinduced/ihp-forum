@@ -1,0 +1,115 @@
+@import "/footer.css";
+
+* {
+    -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #073642;
+}
+
+.thread, .new-comment, .comment, .topic {
+    max-width: 660px;
+}
+
+.thread .thread-title, .topic .topic-title {
+    font-size: 1.5rem;
+    color: #073642;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-weight: 600;
+}
+
+.thread .thread-body {
+    color: hsla(192, 81%, 14%, 85%);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.topic .topic-description {
+    color: hsla(192, 81%, 14%, 85%);
+    display: block;
+}
+
+
+.thread .thread-created-at, .comment .comment-meta, .comment .comment-meta a {
+    font-size: 0.8rem;
+    color: #839496;
+}
+
+.user-picture {
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+}
+
+.thread .user-picture {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+textarea {
+    min-height: 8rem;
+}
+
+#users-new {
+    max-width: 600px;
+}
+
+.comment .comment-body {
+    background-color: hsla(192, 81%, 5%, 0.04);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.comment {
+    margin-bottom: 3rem;
+}
+
+.comment .comment-meta, .comment .comment-meta a {
+    margin-bottom: 0.25rem;
+    font-size: 0.6rem;
+}
+
+.comment .comment-meta a {
+    margin-left: 0.5rem;
+}
+
+.user-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: hsla(192, 81%, 26%, 0.8);
+}
+
+.topic {
+    margin-bottom: 2rem;
+}
+
+.topic .topic-meta {
+    font-size: 0.8rem;
+    color: hsla(192, 81%, 14%, 67%);
+}
+
+pre {
+    background-color: rgba(0, 43, 54, 0.11);
+    color: #002b36;
+    padding: 1rem;
+    border-radius: 3px;
+}
+
+code .cr {
+  color: #073642 !important;
+  font-weight: bold;
+}
+
+code.language-haskell .kw, code.language-sql .kw, code.language-html .kw { color: #859900; }
+code.language-haskell .st { color: #2aa198; }
