@@ -16,9 +16,9 @@ instance View NewView ViewContext where
 
 renderForm :: User -> Html
 renderForm user = formFor user [hsx|
-    {(textField #name) { placeholder = "Your username, it's recommded to use your GitHub user name"}}
+    {(textField #name) { placeholder = "Your username; it's recommended to use your GitHub username"}}
     {(textField #email) { placeholder = "Not shown anywhere in the forum"}}
     {(passwordField #passwordHash) { fieldLabel = "Password:"}}
-    {(textField #githubName) { fieldLabel = "GitHub Username", placeholder = "optional, so we can link to your GitHub"}}
+    {(textField #githubName) { fieldLabel = "GitHub username", placeholder = "Optional, so we can link to your GitHub"}}
     {submitButton}
 |]
