@@ -19,7 +19,7 @@ renderThread thread = [hsx|
         </a>
 
         <a class="thread-body" href={ShowThreadAction (get #id thread)}>
-            {get #body thread}
+            {get #body thread |> renderMarkdown}
         </a>
         <p class="text-muted">
             <a class="text-muted" href={ShowUserAction (get #id user)}>{get #name user}</a>
