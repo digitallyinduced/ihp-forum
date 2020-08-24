@@ -56,6 +56,13 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 0.5rem;
 }
 
+.threads .thread {
+    background-color: hsla(192, 81%, 5%, 0.04);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
 textarea {
     min-height: 8rem;
 }

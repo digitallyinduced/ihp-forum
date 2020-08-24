@@ -5,9 +5,7 @@ data IndexView = IndexView { threads :: [Include' ["userId", "topicId"] Thread] 
 
 instance View IndexView ViewContext where
     html IndexView { .. } = [hsx|
-        
-
-        {forEach threads renderThread}
+        <div class="threads">{forEach threads renderThread}</div>
     |]
 
 

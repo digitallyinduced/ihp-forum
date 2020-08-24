@@ -18,6 +18,6 @@ instance View EditView ViewContext where
 renderForm :: Thread -> Html
 renderForm thread = formFor thread [hsx|
     {textField #title}
-    {textField #body}
+    {textareaField #body}
     {submitButton}
 |]
