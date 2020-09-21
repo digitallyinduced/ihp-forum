@@ -15,3 +15,13 @@ data ViewContext = ViewContext
     , controllerContext :: ControllerSupport.ControllerContext
     , layout :: Layout
     }
+
+data UserBadgesController
+    = UserBadgesAction
+    | NewUserBadgeAction
+    | ShowUserBadgeAction { userBadgeId :: !(Id UserBadge) }
+    | CreateUserBadgeAction
+    | EditUserBadgeAction { userBadgeId :: !(Id UserBadge) }
+    | UpdateUserBadgeAction { userBadgeId :: !(Id UserBadge) }
+    | DeleteUserBadgeAction { userBadgeId :: !(Id UserBadge) }
+    deriving (Eq, Show, Data)
