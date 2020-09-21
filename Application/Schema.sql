@@ -30,7 +30,14 @@ CREATE TABLE topics (
     threads_count INT DEFAULT 0 NOT NULL,
     last_activity_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
 );
-ALTER TABLE comments ADD CONSTRAINT comments_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
-ALTER TABLE comments ADD CONSTRAINT comments_ref_thread_id FOREIGN KEY (thread_id) REFERENCES threads (id) ON DELETE NO ACTION;
-ALTER TABLE threads ADD CONSTRAINT threads_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
+CREATE TYPE badges AS ENUM ('ihp_contributor', 'ihp_sticker_owner', 'di_team', 'di_partner', 'forum_samaritan');
+CREATE TABLE user_badges (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+    user_id UUID NOT NULL,
+    badge badges NOT NULL
+);
 ALTER TABLE threads ADD CONSTRAINT threads_ref_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id) ON DELETE NO ACTION;
+ALTER TABLE threads ADD CONSTRAINT threads_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
+ALTER TABLE comments ADD CONSTRAINT comments_ref_thread_id FOREIGN KEY (thread_id) REFERENCES threads (id) ON DELETE NO ACTION;
+ALTER TABLE comments ADD CONSTRAINT comments_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
+ALTER TABLE user_badges ADD CONSTRAINT user_badges_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;

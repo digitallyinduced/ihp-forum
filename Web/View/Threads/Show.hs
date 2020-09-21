@@ -15,7 +15,6 @@ instance View ShowView ViewContext where
                     {renderPicture author}
                     {get #name author}
                 </a>
-
                 {when (Just (get #userId thread |> get #id) == fmap (get #id) currentUserOrNothing) threadOptions}
             </div>
 

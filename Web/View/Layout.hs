@@ -89,8 +89,8 @@ renderLoggedInAs (Just user) = [hsx|
     </div>
 </div> 
 |]
-renderLoggedInAs Nothing = [hsx|
 
+renderLoggedInAs Nothing = [hsx|
 <div class="navbar-nav">
     <div class="nav-item">
         <a class="nav-link" href={NewSessionAction}>Login</a>

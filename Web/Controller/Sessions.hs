@@ -10,3 +10,4 @@ instance Controller SessionsController where
     action DeleteSessionAction = Sessions.deleteSessionAction @User
 
 instance Sessions.SessionsControllerConfig User where
+    afterLoginRedirectPath = "/About"
