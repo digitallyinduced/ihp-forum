@@ -5,7 +5,7 @@ import Web.View.Threads.Index (renderThread)
 data ShowView = ShowView
     { user :: User
     , threads :: [Include' ["userId", "topicId"] Thread]
-    , badges :: [Include "userBadges" Badge]
+    , badges :: [Include "userBadges" User]
     }
 
 instance View ShowView ViewContext where
@@ -27,7 +27,7 @@ instance View ShowView ViewContext where
         where
             githubUrl = ("https://github.com/" :: Text) <> get #githubName user
             
---renderBadge :: Badge -> Html
+--renderBadge :: UserBadge -> Html
 renderBadge badge = [hsx| <span class="badge badge-pill badge-primary"> {(fromMaybe "" (lookup badge badgeMap))} </span> |]
                      where 
                        badgeMap = [(IhpContributor, "IHP Contributor"::Text) 
