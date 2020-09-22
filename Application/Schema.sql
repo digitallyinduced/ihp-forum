@@ -40,4 +40,4 @@ ALTER TABLE threads ADD CONSTRAINT threads_ref_topic_id FOREIGN KEY (topic_id) R
 ALTER TABLE threads ADD CONSTRAINT threads_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
 ALTER TABLE comments ADD CONSTRAINT comments_ref_thread_id FOREIGN KEY (thread_id) REFERENCES threads (id) ON DELETE NO ACTION;
 ALTER TABLE comments ADD CONSTRAINT comments_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
-ALTER TABLE user_badges ADD CONSTRAINT user_badges_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
+ALTER TABLE user_badges ADD CONSTRAINT user_badges_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
