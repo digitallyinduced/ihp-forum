@@ -1,5 +1,5 @@
 module Web.View.Users.Show where
-import Web.View.Prelude
+import Web.View.Prelude hiding (badges)
 import Web.View.Threads.Index (renderThread)
 
 data ShowView = ShowView
@@ -27,8 +27,8 @@ instance View ShowView ViewContext where
         where
             githubUrl = ("https://github.com/" :: Text) <> get #githubName user
             
---renderBadge :: UserBadge -> Html
-renderBadge badge = [hsx| <span class="badge badge-pill badge-primary"> {(fromMaybe "" (lookup badge badgeMap))} </span> |]
+            renderBadge :: UserBadge -> Html
+            renderBadge userbadge = [hsx| <span class="badge badge-pill badge-primary"> {(fromMaybe "" (lookup (get #badge userbadge) badgeMap))} </span> |]
                      where 
                        badgeMap = [(IhpContributor, "IHP Contributor"::Text) 
                                    ,(IhpStickerOwner, "IHP Sticker Owner"::Text) 
