@@ -21,10 +21,9 @@ instance Controller UsersController where
             |> fetch
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId
-        badges <- user
-            |> get #userBadges
+        badges <- query @UserBadge 
+            |> filterWhere (#userId, currentUserId) 
             |> fetch
-            >>= collectionFetchRelated #userBadges
         render ShowView { .. }
 
     action EditUserAction { userId } = do

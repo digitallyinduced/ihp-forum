@@ -5,7 +5,7 @@ import Web.View.Threads.Index (renderThread)
 data ShowView = ShowView
     { user :: User
     , threads :: [Include' ["userId", "topicId"] Thread]
-    , badges :: [Include "userBadges" User]
+    , badges :: [UserBadge]
     }
 
 instance View ShowView ViewContext where
@@ -17,7 +17,7 @@ instance View ShowView ViewContext where
                 Show GitHub Profile
             </a>
             <div class="user-badges">
-                {forEach badges renderBadge}
+                {forEach badges renderBadge} 
             </div>
         </div>
 
@@ -36,5 +36,3 @@ instance View ShowView ViewContext where
                                    ,(DiPartner, "di Partner"::Text)
                                    ,(ForumSamaritan, "Forum Samaritan"::Text)
                                    ]  
-
-

@@ -13,7 +13,9 @@ import Admin.View.UserBadges.Edit
 
 instance Controller UserBadgesController where
     action UserBadgesAction = do
-        userBadges <- query @UserBadge |> fetch
+        userBadges <- query @UserBadge 
+            |> fetch
+            >>= collectionFetchRelated #userId
         render IndexView { .. }
 
     action NewUserBadgeAction = do

@@ -34,6 +34,9 @@ instance Controller ThreadsController where
                 |> orderBy #createdAt
                 |> fetch
                 >>= collectionFetchRelated #userId
+        badges <- query @UserBadge 
+            |> fetch
+            >>= collectionFetchRelated #userId
         render ShowView { .. }
 
     action EditThreadAction { threadId } = do
