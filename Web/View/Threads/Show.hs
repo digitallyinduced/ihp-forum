@@ -1,5 +1,6 @@
 module Web.View.Threads.Show where
 import Web.View.Prelude
+import Application.Helper.View (badgeMap)
 
 data ShowView = ShowView
     { thread :: Include "userId" Thread
@@ -55,14 +56,18 @@ instance View ShowView ViewContext where
 
             author = get #userId thread
 
-            renderBadges author badge   
-                     | (author == (get #userId badge)) = [hsx| <td> <span class="badge badge-pill badge-primary"> {(get #badge badge)}</span> </td> |]
+            renderBadges author userbadge   
+                     | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+                        where
+                            badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
+            renderBadges _ _ = [hsx||]
 
             renderComment comment = [hsx|
                 <div class="row comment">
                     <div class="col-3 user-col">
                         {renderPicture (get #userId comment)}
                         {get #userId comment |> get #name}
+                        <tr> {forEach badges (renderBadges (get #userId comment))} </tr>
                     </div>
 
                     <div class="col-9">
