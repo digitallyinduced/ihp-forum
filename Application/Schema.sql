@@ -34,7 +34,8 @@ CREATE TYPE badges AS ENUM ('ihp_contributor', 'ihp_sticker_owner', 'di_team', '
 CREATE TABLE user_badges (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     user_id UUID NOT NULL,
-    badge badges NOT NULL
+    badge badges NOT NULL,
+    UNIQUE (user_id, badge)
 );
 ALTER TABLE threads ADD CONSTRAINT threads_ref_topic_id FOREIGN KEY (topic_id) REFERENCES topics (id) ON DELETE NO ACTION;
 ALTER TABLE threads ADD CONSTRAINT threads_ref_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE NO ACTION;
