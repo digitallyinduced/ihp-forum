@@ -3,15 +3,12 @@ module Admin.Controller.UserBadges where
 import Admin.Controller.Prelude
 import Admin.View.UserBadges.Index
 import Admin.View.UserBadges.New
-import Admin.View.UserBadges.Edit
-import Admin.View.UserBadges.Show
-
-import Admin.View.UserBadges.Index
-import Admin.View.UserBadges.New
 import Admin.View.UserBadges.Show
 import Admin.View.UserBadges.Edit
 
 instance Controller UserBadgesController where
+    beforeAction = ensureIsAdmin @Admin
+
     action UserBadgesAction = do
         userBadges <- query @UserBadge 
             |> fetch

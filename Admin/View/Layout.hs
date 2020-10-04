@@ -9,6 +9,9 @@ import Admin.Routes
 import qualified IHP.FrameworkConfig as FrameworkConfig
 import Config ()
 
+import Application.Helper.View
+import Generated.Types
+
 type Html = HtmlWithContext ViewContext
 
 defaultLayout :: Html -> Html
@@ -23,10 +26,33 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
 </head>
 <body>
     <div class="container mt-4">
+        {renderLoggedInAs currentAdminOrNothing}
         {renderFlashMessages}
         {inner}
     </div>
 </body>
+|]
+
+renderLoggedInAs :: Maybe Admin -> Html
+renderLoggedInAs (Just admin) = [hsx|
+<div class="navbar-nav">
+    <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Logged in as: {get #name admin}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item js-delete js-delete-no-confirm" href={DeleteSessionAction}>Logout</a>
+        </div>
+    </div>
+</div> 
+|]
+
+renderLoggedInAs Nothing = [hsx|
+<div class="navbar-nav">
+    <div class="nav-item">
+        <a class="nav-link" href={NewSessionAction}>Login</a>
+    </div>
+</div> 
 |]
 
 stylesheets = do

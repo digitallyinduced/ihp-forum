@@ -1,17 +1,18 @@
 module Application.Helper.View (
-    -- To use the built in login:
     module IHP.LoginSupport.Helper.View
-    , renderMarkdown, badgeMap
+   ,renderMarkdown, badgeMap
+   ,currentAdmin, currentAdminOrNothing
 ) where
 
 -- Here you can add functions which are available in all your views
-
--- To use the built in login:
 import IHP.Prelude
 import IHP.ViewPrelude
+
 import IHP.LoginSupport.Helper.View
+
 import qualified Text.MMark as MMark
 import Text.MMark.Extension.GhcSyntaxHighlighter
+
 import Generated.Types
 
 renderMarkdown text =
@@ -30,4 +31,11 @@ badgeMap = [(IhpContributor, ("IHP Contributor", "badge badge-pill badge-info"))
            ,(DiPartner, ("di Partner", "badge badge-pill badge-success"))
            ,(ForumSamaritan, ("Forum Samaritan", "badge badge-pill badge-secondary"))
            ]
+
+currentAdmin :: (?viewContext :: viewContext, HasField "admin" viewContext (Maybe admin)) => admin
+currentAdmin = fromMaybe (error "Application.Helper.View.currentAdmin: Not logged in") currentAdminOrNothing
+
+currentAdminOrNothing :: (?viewContext :: viewContext, HasField "admin" viewContext (Maybe admin)) => Maybe admin
+currentAdminOrNothing = getField @"admin" ?viewContext 
+
 

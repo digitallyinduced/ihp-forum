@@ -14,6 +14,13 @@ SET row_security = off;
 
 SET SESSION AUTHORIZATION DEFAULT;
 
+ALTER TABLE public.admins DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE public.admins ENABLE TRIGGER ALL;
+
+
 ALTER TABLE public.topics DISABLE TRIGGER ALL;
 
 INSERT INTO public.topics (id, name, description, threads_count, last_activity_at) VALUES ('9de25c37-17ab-42c6-8cf2-b75c3869c4e2', 'Haskell Questions', 'General Haskell Questions', 0, '2020-08-15 12:02:56.332506+01');
