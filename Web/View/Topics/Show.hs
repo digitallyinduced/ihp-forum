@@ -11,7 +11,9 @@ instance View ShowView ViewContext where
     html ShowView { .. } = [hsx|
         <h1>{get #name topic}</h1>
 
-        {forEach threads renderThread}
+        <div class="threads">
+            {forEach threads renderThread}
+        </div>
         {whenEmpty threads emptyTopic}
     |]
 
