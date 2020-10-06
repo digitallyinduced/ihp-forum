@@ -19,12 +19,12 @@ renderThread thread = [hsx|
         <a class="thread-body" href={ShowThreadAction (get #id thread)}>
             {get #body thread |> renderMarkdown}
         </a>
-        <p class="text-muted">
+        <div class="text-muted">
             <a class="text-muted" href={ShowUserAction (get #id user)}>{get #name user}</a>
             , {get #createdAt thread |> timeAgo}
 
             <span class="ml-1">in <a href={ShowTopicAction (get #id topic)} class="text-muted">{get #name topic}</a></span>
-        </p>
+        </div>
     </div>
 |]
     where

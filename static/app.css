@@ -9,6 +9,7 @@ html, body {
     flex-direction: column;
     flex-grow: 1;
     height: 100%;
+    background-color: rgb(250, 250, 251);
 }
 
 h1, h2, h3, h4, h5 {
@@ -57,18 +58,19 @@ h1, h2, h3, h4, h5 {
 }
 
 .threads .thread {
-    background-color: hsla(192, 81%, 5%, 0.04);
+    background-color: #fff;
     padding: 1rem;
     margin-bottom: 1rem;
-    border-radius: 4px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px 0 rgb(7 54 66 / 0.2);
 }
 
 .threads .thread img {
     width: 100%;
 }
 
-.threads .thread h2, .threads .thread h3, .threads .thread h4, .threads .thread h5 {
-    font-size: 1.125rem;
+.threads .thread h1, .threads .thread h2, .threads .thread h3, .threads .thread h4, .threads .thread h5 {
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -136,4 +138,8 @@ code.language-haskell .st { color: #2aa198; }
 }
 #ihp-cloud-logo img {
     width: 200px;
+}
+
+.text-muted {
+    color: hsla(192, 81%, 26%, 0.8) !important;
 }
