@@ -13,7 +13,7 @@ import Web.View.Threads.Edit
 instance Controller ThreadsController where
     action ThreadsAction = do
         threads <- query @Thread
-            |> orderBy #createdAt
+            |> orderByDesc #createdAt
             |> fetch
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId
