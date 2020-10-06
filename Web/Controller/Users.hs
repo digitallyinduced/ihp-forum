@@ -15,12 +15,17 @@ instance Controller UsersController where
 
     action ShowUserAction { userId } = do
         user <- fetch userId
+
         threads <- user
             |> get #threads
             |> orderByDesc #createdAt
             |> fetch
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId
+
+        badges <- query @UserBadge 
+            |> filterWhere (#userId, userId) 
+            |> fetch
         render ShowView { .. }
 
     action EditUserAction { userId } = do

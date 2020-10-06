@@ -54,6 +54,7 @@ data SessionsController
     | CreateSessionAction
     | DeleteSessionAction
     deriving (Eq, Show, Data)
+
 data TopicsController
     = TopicsAction
     | NewTopicAction

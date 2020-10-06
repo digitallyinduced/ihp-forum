@@ -29,11 +29,17 @@ instance Controller ThreadsController where
     action ShowThreadAction { threadId } = do
         thread <- fetch threadId
             >>= fetchRelated #userId
+
         comments <- thread
                 |> get #comments
                 |> orderBy #createdAt
                 |> fetch
                 >>= collectionFetchRelated #userId
+
+        badges <- query @UserBadge 
+            |> fetch
+            >>= collectionFetchRelated #userId
+
         render ShowView { .. }
 
     action EditThreadAction { threadId } = do
