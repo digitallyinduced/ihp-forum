@@ -64,13 +64,21 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
 
     <footer style="margin-top: 3rem; background-color: #073642; padding-top: 2rem; padding-bottom: 2rem; color:hsla(196, 13%, 96%, 1)">
         <div class="container">
-            <a href="https://github.com/digitallyinduced/ihp">GitHub</a>
-            <a href="https://ihp.digitallyinduced.com//Guide/">Guide</a>
-            <a href="https://ihp.digitallyinduced.com//api-docs/">API</a>
-            <a href="https://www.digitallyinduced.com/imprint.html">Imprint</a>
+            <div class="footer-nav">
+                <a href="https://github.com/digitallyinduced/ihp">GitHub</a>
+                <a href="https://ihp.digitallyinduced.com//Guide/">Guide</a>
+                <a href="https://ihp.digitallyinduced.com//api-docs/">API</a>
+                <a href="https://www.digitallyinduced.com/imprint.html">Imprint</a>
 
-            <a href="https://www.digitallyinduced.com/">© 2020, digitally induced GmbH</a>
+                <a href="https://www.digitallyinduced.com/">© 2020, digitally induced GmbH</a>
+            </div>
+
+
+            <a id="ihp-cloud-logo" href="https://ihpcloud.com/" target="_blank">
+                <img src="https://ihpcloud.com/deployed-with-ihp-cloud-white.svg" alt="Deployed with IHP Cloud"/>
+            </a>
         </div>
+
     </footer>
 </body>
 |]

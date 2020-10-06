@@ -1,5 +1,4 @@
-
-footer a {
+footer .footer-nav a {
     color: hsla(196, 13%, 80%, 1);
     font-weight: bold;
     text-decoration: none;
@@ -7,17 +6,17 @@ footer a {
     font-size: 9px;
 }
 
-footer a:last-child {
+footer .footer-nav a:last-child {
     margin-left: 16px;
 }
 
 @media (min-width: 860px) {
-    footer a {
+    footer .footer-nav a {
         margin-right: 1rem;
         font-size: 1rem;
     }
 
-    footer a:last-child {
+    footer .footer-nav a:last-child {
         float: right;
     }
 }

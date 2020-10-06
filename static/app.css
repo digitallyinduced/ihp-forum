@@ -120,3 +120,11 @@ code .cr {
 
 code.language-haskell .kw, code.language-sql .kw, code.language-html .kw { color: #859900; }
 code.language-haskell .st { color: #2aa198; }
+
+#ihp-cloud-logo {
+    margin-top: 2rem;
+    display: block;
+}
+#ihp-cloud-logo img {
+    width: 200px;
+}
