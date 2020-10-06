@@ -17,7 +17,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .thread, .new-comment, .comment, .topic {
-    max-width: 660px;
+    max-width: 800px;
 }
 
 .thread .thread-title, .topic .topic-title {
@@ -33,6 +33,14 @@ h1, h2, h3, h4, h5 {
     color: hsla(192, 81%, 14%, 85%);
     display: block;
     margin-bottom: 0.5rem;
+}
+
+.thread .thread-content {
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgb(7 54 66 / 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    padding-bottom: 0;
 }
 
 .topic .topic-description {
@@ -142,4 +150,22 @@ code.language-haskell .st { color: #2aa198; }
 
 .text-muted {
     color: hsla(192, 81%, 26%, 0.8) !important;
+}
+
+
+.btn.btn-primary {
+    background-color: hsla(192, 81%, 26%, 1);
+    color: hsla(196, 13%, 98%, 1);
+    border: 1px solid hsla(192, 81%, 19%, 0.1);
+    font-weight: 500;
+}
+
+.btn.btn-primary:active {
+    background-color: hsla(192, 81%, 26%, 0.9) !important;
+    color: hsla(196, 13%, 98%, 1) !important;
+    border: 1px solid hsla(192, 81%, 19%, 0.1) !important;
+}
+
+.btn.btn-primary:hover {
+    background-color: hsla(192, 81%, 26%, 0.8);
 }

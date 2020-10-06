@@ -10,7 +10,7 @@ data ShowView = ShowView
 
 instance View ShowView ViewContext where
     html ShowView { .. } = [hsx|
-        <div class="row thread">
+        <div class="row thread mb-5">
             <div class="col-3 user-col">
                 <a class="user-col" href={ShowUserAction (get #id author)}>
                     {renderPicture author}
@@ -20,27 +20,23 @@ instance View ShowView ViewContext where
                 {when (Just (get #userId thread |> get #id) == fmap (get #id) currentUserOrNothing) threadOptions}
             </div>
 
-            <div class="col-9">
+            <div class="col-9 thread-content">
                 <div class="text-muted thread-created-at">
                     {get #createdAt thread |> timeAgo}
                 </div>
                 <h1 class="thread-title">{get #title thread}</h1>
-                <p class="thread-body">{get #body thread |> renderMarkdown}</p>
+                <div class="thread-body">{get #body thread |> renderMarkdown}</div>
             </div>
         </div>
 
-        <hr />
-
         {forEach comments renderComment}
-
-        <hr />
 
 
         <div class="row new-comment">
             <div class="col-3">
             </div>
 
-            <div class="col-9">
+            <div class="col-9 mb-5 text-center">
                 <a class="btn btn-primary" href={NewCommentAction (get #id thread)}>Add Comment</a>
             </div>
         </div>
