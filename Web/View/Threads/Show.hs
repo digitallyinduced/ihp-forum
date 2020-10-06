@@ -1,10 +1,11 @@
 module Web.View.Threads.Show where
 import Web.View.Prelude
-
+import Application.Helper.View (badgeMap)
 
 data ShowView = ShowView
     { thread :: Include "userId" Thread
     , comments :: [Include "userId" Comment]
+    , badges :: [Include "userId" UserBadge]
     }
 
 instance View ShowView ViewContext where
@@ -15,7 +16,7 @@ instance View ShowView ViewContext where
                     {renderPicture author}
                     {get #name author}
                 </a>
-
+                <tr> {forEach badges (renderBadges author)} </tr>
                 {when (Just (get #userId thread |> get #id) == fmap (get #id) currentUserOrNothing) threadOptions}
             </div>
 
@@ -52,13 +53,21 @@ instance View ShowView ViewContext where
                     <a href={DeleteThreadAction (get #id thread)} class="text-muted js-delete d-block">Delete this thread</a>
                 </p>
             |]
+
             author = get #userId thread
+
+            renderBadges author userbadge   
+                     | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+                        where
+                            badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
+            renderBadges _ _ = [hsx||]
 
             renderComment comment = [hsx|
                 <div class="row comment">
                     <div class="col-3 user-col">
                         {renderPicture (get #userId comment)}
                         {get #userId comment |> get #name}
+                        <tr> {forEach badges (renderBadges (get #userId comment))} </tr>
                     </div>
 
                     <div class="col-9">
