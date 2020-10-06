@@ -63,6 +63,15 @@ h1, h2, h3, h4, h5 {
     border-radius: 4px;
 }
 
+.threads .thread img {
+    width: 100%;
+}
+
+.threads .thread h2, .threads .thread h3, .threads .thread h4, .threads .thread h5 {
+    font-size: 1.125rem;
+    font-weight: bold;
+}
+
 textarea {
     min-height: 8rem;
 }
