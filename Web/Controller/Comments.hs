@@ -15,6 +15,8 @@ instance Controller CommentsController where
         thread <- fetch threadId
         let comment = newRecord
                 |> set #threadId threadId
+        badges <- query @UserBadge
+            |> fetch
         render NewView { .. }
 
     action ShowCommentAction { commentId } = do
