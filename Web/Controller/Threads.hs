@@ -64,7 +64,8 @@ instance Controller ThreadsController where
                 Right thread -> do
                     thread <- thread |> updateRecord
                     setSuccessMessage "Thread updated"
-                    redirectTo EditThreadAction { .. }
+                    let threadId = get #id thread
+                    redirectTo ShowThreadAction { threadId }
 
     action CreateThreadAction = do
         ensureIsUser
