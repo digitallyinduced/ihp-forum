@@ -9,7 +9,6 @@ data NewView = NewView
 
 instance View NewView ViewContext where
     html NewView { .. } = [hsx|
-        <a href={ShowThreadAction (get #id thread)}>Go back to Thread</a>
         <div class="row thread mb-5">
             <div class="col-3 user-col">
                 <a class="user-col" href={ShowUserAction (get #id author)}>
@@ -18,13 +17,13 @@ instance View NewView ViewContext where
                 </a>
                 <tr> {forEach badges (renderBadges author)} </tr>
             </div>
-
             <div class="col-9 thread-content">
                 <div class="text-muted thread-created-at">
                     {get #createdAt thread |> timeAgo}
                 </div>
                 <h1 class="thread-title">{get #title thread}</h1>
                 <div class="thread-body">{get #body thread |> renderMarkdown}</div>
+
             </div>
         </div>
 
@@ -39,10 +38,9 @@ instance View NewView ViewContext where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
             renderBadges _ _ = [hsx||]
 
-
-renderForm :: Comment -> Html
-renderForm comment = formFor comment [hsx|
-    {hiddenField #threadId}
-    {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }
-    {submitButton}
-|]
+            renderForm comment = formFor comment [hsx|
+                {hiddenField #threadId}
+                {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }
+                {submitButton}
+                <a href={ShowThreadAction (get #id thread)}><button class="ml-3 btn btn-secondary">Go back to Thread</button></a>
+            |]

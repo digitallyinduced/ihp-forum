@@ -9,10 +9,6 @@ data EditView = EditView
 
 instance View EditView ViewContext where
     html EditView { .. } = [hsx|
-        <a href={ShowThreadAction (get #id thread)}>
-            Go back to <q>{get #title thread}</q>
-        </a>
-        <h1>Edit Comment</h1>
         <div class="row thread mb-5">
             <div class="col-3 user-col">
                 <a class="user-col" href={ShowUserAction (get #id author)}>
@@ -36,16 +32,15 @@ instance View EditView ViewContext where
       where
             author = get #userId thread
 
-renderForm :: Comment -> Html
-renderForm comment = formFor comment [hsx|
-    {hiddenField #threadId}
-    {hiddenField #userId}
-    {textareaField #body}
-    {submitButton}
-|]
             renderBadges author userbadge
                      | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
             renderBadges _ _ = [hsx||]
 
+            renderForm comment = formFor comment [hsx|
+                {hiddenField #threadId}
+                {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }
+                {submitButton}
+                <a href={ShowThreadAction (get #id thread)}><button class="ml-3 btn btn-secondary">Go back to Thread</button></a>
+            |]
