@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data NewView = NewView
   { comment :: Comment
-  , thread :: Thread
+  , thread :: Include "userId" Thread
   , badges :: [Include "userId" UserBadge]
   }
 

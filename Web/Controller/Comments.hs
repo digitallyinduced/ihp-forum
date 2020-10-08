@@ -13,10 +13,12 @@ instance Controller CommentsController where
 
     action NewCommentAction { threadId } = do
         thread <- fetch threadId
+            >>= fetchRelated #userId
         let comment = newRecord
                 |> set #threadId threadId
         badges <- query @UserBadge
             |> fetch
+            >>= collectionFetchRelated #userId
         render NewView { .. }
 
     action ShowCommentAction { commentId } = do
@@ -51,7 +53,11 @@ instance Controller CommentsController where
             |> ifValid \case
                 Left comment -> do
                     thread <- fetch (get #threadId comment)
-                    render NewView { .. } 
+                        >>= fetchRelated #userId
+                    badges <- query @UserBadge
+                        |> fetch
+                        >>= collectionFetchRelated #userId
+                    render NewView { .. }
                 Right comment -> do
                     comment <- comment |> createRecord
 
