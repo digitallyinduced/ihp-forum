@@ -42,5 +42,5 @@ instance View EditView ViewContext where
                 {hiddenField #threadId}
                 {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }
                 {submitButton}
-                <a href={ShowThreadAction (get #id thread)}><button class="ml-3 btn btn-secondary">Go back to Thread</button></a>
+                <a class="ml-3 btn btn-secondary" href={ShowThreadAction (get #id thread)}>Go back to Thread</a>
             |]
