@@ -32,8 +32,7 @@ instance View NewView ViewContext where
       where
             author = get #userId thread
 
-            renderBadges author userbadge
-                     | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+            renderBadges author userbadge= when (author == (get #userId userbadge)) [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
             renderBadges _ _ = [hsx||]
