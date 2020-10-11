@@ -1,23 +1,23 @@
 module Web.View.Threads.Edit where
 import Web.View.Prelude
 
-data EditView = EditView { thread :: Thread }
+data EditView = EditView { thread :: Thread, topics :: [Topic] }
 
 instance View EditView ViewContext where
     html EditView { .. } = [hsx|
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href={ThreadsAction}>Threads</a></li>
-                <li class="breadcrumb-item active">Edit Thread</li>
-            </ol>
-        </nav>
         <h1>Edit Thread</h1>
         {renderForm thread}
     |]
+      where
+            renderForm :: Thread -> Html
+            renderForm thread = formFor thread [hsx|
+                {textField #title}
+                {(textareaField #body) { helpText = "You can use markdown here."} }
+                {(selectField #topicId topics) { helpText = "Please pick the topic that best matches your question"}}
+                {submitButton}
+            |]
 
-renderForm :: Thread -> Html
-renderForm thread = formFor thread [hsx|
-    {textField #title}
-    {textareaField #body}
-    {submitButton}
-|]
+instance CanSelect Topic where
+    type SelectValue Topic = Id Topic
+    selectValue = get #id
+    selectLabel topic = get #name topic <> ": " <> get #description topic

@@ -47,21 +47,25 @@ instance Controller ThreadsController where
         thread <- fetch threadId
         accessDeniedUnless (get #userId thread == currentUserId)
 
+        topics <- query @Topic |> fetch
         render EditView { .. }
 
     action UpdateThreadAction { threadId } = do
         ensureIsUser
         thread <- fetch threadId
         accessDeniedUnless (get #userId thread == currentUserId)
-        
+
         thread
             |> buildThread
             |> ifValid \case
-                Left thread -> render EditView { .. }
+                Left thread -> do
+                    topics <- query @Topic |> fetch
+                    render EditView { .. }
                 Right thread -> do
                     thread <- thread |> updateRecord
                     setSuccessMessage "Thread updated"
-                    redirectTo EditThreadAction { .. }
+                    let threadId = get #id thread
+                    redirectTo ShowThreadAction { threadId }
 
     action CreateThreadAction = do
         ensureIsUser
