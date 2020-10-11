@@ -169,3 +169,21 @@ code.language-haskell .st { color: #2aa198; }
 .btn.btn-primary:hover {
     background-color: hsla(192, 81%, 26%, 0.8);
 }
+
+.btn.btn-secondary {
+    background-color: transparent;
+    color: hsla(192, 81%, 19%, 0.8);
+    border: 1px solid hsla(192, 81%, 19%, 0.8);
+    font-weight: 500;
+}
+
+.btn.btn-secondary:active {
+    background-color: transparent;
+    color: hsla(192, 81%, 19%, 0.8) !important;
+    border: 1px solid hsla(192, 81%, 19%, 0.8) !important;
+}
+
+.btn.btn-secondary:hover {
+    background-color: hsla(192, 81%, 19%, 0.1);
+    color: hsla(192, 81%, 19%, 1);
+}
