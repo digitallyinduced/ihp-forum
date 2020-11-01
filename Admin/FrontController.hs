@@ -13,7 +13,7 @@ import Admin.Controller.Sessions
 
 instance FrontController AdminApplication where
     controllers = 
-        [ startPage WelcomeAction
+        [
         , parseRoute @UserBadgesController
         , parseRoute @SessionsController
         -- Generator Marker
