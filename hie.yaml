@@ -1,0 +1,3 @@
+cradle:
+  bios:
+    program: build/ihp-lib/.hie-bios
