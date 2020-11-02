@@ -13,8 +13,7 @@ import Admin.Controller.Sessions
 
 instance FrontController AdminApplication where
     controllers = 
-        [
-        , parseRoute @UserBadgesController
+        [ parseRoute @UserBadgesController
         , parseRoute @SessionsController
         -- Generator Marker
         , parseRoute @AdminsController
