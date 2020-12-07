@@ -1,4 +1,0 @@
-{
-    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/default.nix",
-    "haskell.formattingProvider": "stylish-haskell"
-}
