@@ -86,8 +86,8 @@ metaTags :: Html
 metaTags = [hsx|
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta property="og:title" content="App"/>
+    <meta property="og:title" content="IHP Forum"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:url" content="TODO"/>
-    <meta property="og:description" content="TODO"/>
+    <!--<meta property="og:url" content=""/>-->
+    <meta property="og:description" content="The place to share everything about IHP and the Haskellworld."/>
 |]
