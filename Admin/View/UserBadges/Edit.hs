@@ -3,7 +3,7 @@ import Admin.View.Prelude
 
 data EditView = EditView { userBadge :: UserBadge }
 
-instance View EditView ViewContext where
+instance View EditView where
     html EditView { .. } = [hsx|
         <nav>
             <ol class="breadcrumb">

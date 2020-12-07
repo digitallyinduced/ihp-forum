@@ -3,7 +3,7 @@ import Admin.View.Prelude
 
 data ShowView = ShowView { admin :: Admin }
 
-instance View ShowView ViewContext where
+instance View ShowView where
     html ShowView { .. } = [hsx|
         <nav>
             <ol class="breadcrumb">

@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data EditView = EditView { thread :: Thread, topics :: [Topic] }
 
-instance View EditView ViewContext where
+instance View EditView where
     html EditView { .. } = [hsx|
         <h1>Edit Thread</h1>
         {renderForm thread}

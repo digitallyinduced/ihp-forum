@@ -1,7 +1,6 @@
 module Application.Helper.View (
     module IHP.LoginSupport.Helper.View
    ,renderMarkdown, badgeMap
-   ,currentAdmin, currentAdminOrNothing
 ) where
 
 -- Here you can add functions which are available in all your views
@@ -31,11 +30,3 @@ badgeMap = [(IhpContributor, ("IHP Contributor", "badge badge-pill badge-info"))
            ,(DiPartner, ("di Partner", "badge badge-pill badge-success"))
            ,(ForumSamaritan, ("Forum Samaritan", "badge badge-pill badge-secondary"))
            ]
-
-currentAdmin :: (?viewContext :: viewContext, HasField "admin" viewContext (Maybe admin)) => admin
-currentAdmin = fromMaybe (error "Application.Helper.View.currentAdmin: Not logged in") currentAdminOrNothing
-
-currentAdminOrNothing :: (?viewContext :: viewContext, HasField "admin" viewContext (Maybe admin)) => Maybe admin
-currentAdminOrNothing = getField @"admin" ?viewContext 
-
-

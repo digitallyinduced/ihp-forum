@@ -11,14 +11,6 @@ import IHP.LoginSupport.Types
 
 data AdminApplication = AdminApplication deriving (Eq, Show)
 
-data ViewContext = ViewContext
-    { requestContext :: ControllerSupport.RequestContext
-    , admin :: Maybe Admin
-    , flashMessages :: [IHP.Controller.Session.FlashMessage]
-    , controllerContext :: ControllerSupport.ControllerContext
-    , layout :: Layout
-    }
-
 data UserBadgesController
     = UserBadgesAction
     | NewUserBadgeAction
@@ -30,7 +22,9 @@ data UserBadgesController
     deriving (Eq, Show, Data)
 
 data SessionsController
-    = NewSessionAction | CreateSessionAction | DeleteSessionAction   
+    = NewSessionAction
+    | CreateSessionAction
+    | DeleteSessionAction
      deriving (Eq, Show, Data)
 
 instance HasNewSessionUrl Admin where

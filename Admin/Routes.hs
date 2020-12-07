@@ -5,8 +5,7 @@ import Admin.Types
 
 -- Generator Marker
 instance AutoRoute SessionsController
-instance AutoRoute UserBadgesController
-type instance ModelControllerMap AdminApplication UserBadge = UserBadgesController
-instance AutoRoute AdminsController
-type instance ModelControllerMap AdminApplication Admin = AdminsController
 
+instance AutoRoute UserBadgesController
+
+instance AutoRoute AdminsController

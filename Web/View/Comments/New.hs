@@ -7,7 +7,7 @@ data NewView = NewView
   , badges :: [Include "userId" UserBadge]
   }
 
-instance View NewView ViewContext where
+instance View NewView where
     html NewView { .. } = [hsx|
         <div class="row thread mb-5">
             <div class="col-3 user-col">

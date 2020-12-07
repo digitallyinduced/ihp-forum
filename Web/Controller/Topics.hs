@@ -25,3 +25,9 @@ instance Controller TopicsController where
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId
         render ShowView { .. }
+
+    action NewTopicAction = renderNotFound
+    action CreateTopicAction = renderNotFound
+    action (EditTopicAction _) = renderNotFound
+    action (UpdateTopicAction _) = renderNotFound
+    action (DeleteTopicAction _) = renderNotFound

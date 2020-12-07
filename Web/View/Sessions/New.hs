@@ -2,7 +2,7 @@ module Web.View.Sessions.New where
 import Web.View.Prelude
 import IHP.AuthSupport.View.Sessions.New
 
-instance View (NewView User) ViewContext where
+instance View (NewView User) where
     html NewView { .. } = [hsx|
         <div class="h-100" id="sessions-new">
             <div class="d-flex align-items-center">

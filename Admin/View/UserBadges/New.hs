@@ -3,7 +3,7 @@ import Admin.View.Prelude
 
 data NewView = NewView { userBadge :: UserBadge }
 
-instance View NewView ViewContext where
+instance View NewView where
     html NewView { .. } = [hsx|
         <nav>
             <ol class="breadcrumb">
@@ -21,13 +21,11 @@ renderForm userBadge = formFor userBadge [hsx|
     {selectField #badge badges}
     {submitButton}
 |]
-    where 
+    where
         badges :: [Badge]
         badges = [IhpContributor, IhpStickerOwner, DiTeam, DiPartner, ForumSamaritan]
 
 instance CanSelect Badge where
     type SelectValue Badge = Badge
     selectValue value = value
-    selectLabel = tshow 
-
-
+    selectLabel = tshow

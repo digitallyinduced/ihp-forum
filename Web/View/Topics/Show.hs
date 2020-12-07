@@ -7,7 +7,7 @@ data ShowView = ShowView
     , threads :: [Include' ["userId", "topicId"] Thread]
     }
 
-instance View ShowView ViewContext where
+instance View ShowView where
     html ShowView { .. } = [hsx|
         <h1>{get #name topic}</h1>
 
