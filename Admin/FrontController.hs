@@ -4,6 +4,8 @@ import IHP.ControllerSupport
 import Generated.Types
 import Admin.Types
 import Admin.Controller.UserBadges
+import Admin.Controller.Prelude
+import Admin.View.Layout
 
 -- Controller Imports
 import Admin.Controller.Admins
@@ -12,7 +14,7 @@ import IHP.LoginSupport.Middleware
 import Admin.Controller.Sessions
 
 instance FrontController AdminApplication where
-    controllers = 
+    controllers =
         [ parseRoute @UserBadgesController
         , parseRoute @SessionsController
         -- Generator Marker
@@ -20,5 +22,6 @@ instance FrontController AdminApplication where
         ]
 
 instance InitControllerContext AdminApplication where
-    initContext = initAuthentication @Admin
-
+    initContext = do
+        setLayout defaultLayout
+        initAuthentication @Admin

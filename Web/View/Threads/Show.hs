@@ -8,7 +8,7 @@ data ShowView = ShowView
     , badges :: [Include "userId" UserBadge]
     }
 
-instance View ShowView ViewContext where
+instance View ShowView where
     html ShowView { .. } = [hsx|
         <div class="row thread mb-5">
             <div class="col-3 user-col">
@@ -52,7 +52,7 @@ instance View ShowView ViewContext where
 
             author = get #userId thread
 
-            renderBadges author userbadge   
+            renderBadges author userbadge
                      | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
@@ -73,7 +73,7 @@ instance View ShowView ViewContext where
                             {when currentUserIsAuthor commentActions}
                         </div>
                         <div class="comment-body">{get #body comment |> renderMarkdown}</div>
-                        
+
                     </div>
                 </div>
             |]
@@ -83,4 +83,3 @@ instance View ShowView ViewContext where
                         <a href={EditCommentAction (get #id comment)}>Edit Comment</a>
                         <a href={DeleteCommentAction (get #id comment)} class="js-delete">Delete Comment</a>
                     |]
-

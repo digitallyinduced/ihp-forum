@@ -3,6 +3,8 @@ import IHP.RouterPrelude
 import IHP.ControllerSupport
 import Generated.Types
 import Web.Types
+import Web.Controller.Prelude
+import Web.View.Layout
 
 -- Controller Imports
 import Web.Controller.Topics
@@ -14,7 +16,7 @@ import IHP.LoginSupport.Middleware
 import Web.Controller.Sessions
 
 instance FrontController WebApplication where
-    controllers = 
+    controllers =
         [ startPage ThreadsAction
         -- Generator Marker
         , parseRoute @TopicsController
@@ -25,4 +27,6 @@ instance FrontController WebApplication where
         ]
 
 instance InitControllerContext WebApplication where
-    initContext = initAuthentication @User
+    initContext = do
+        setLayout defaultLayout
+        initAuthentication @User

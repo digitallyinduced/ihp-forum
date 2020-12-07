@@ -9,7 +9,7 @@ data ShowView = ShowView
     , badges :: [UserBadge]
     }
 
-instance View ShowView ViewContext where
+instance View ShowView where
     html ShowView { .. } = [hsx|
         <div class="mb-5">
             {renderPicture user}
@@ -27,7 +27,7 @@ instance View ShowView ViewContext where
     |]
         where
             githubUrl = ("https://github.com/" :: Text) <> get #githubName user
-            
+
             renderBadges userbadge = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)

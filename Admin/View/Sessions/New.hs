@@ -1,10 +1,10 @@
 module Admin.View.Sessions.New where
 import Admin.View.Prelude
-import IHP.AuthSupport.View.Sessions.New 
+import IHP.AuthSupport.View.Sessions.New
 
 --data NewView admin = NewView { admin :: admin } deriving (Typeable)
 
-instance View (NewView Admin) ViewContext where
+instance View (NewView Admin) where
     html NewView { .. } = [hsx|
         <div class="h-100" id="sessions-new">
             <div class="d-flex align-items-center">

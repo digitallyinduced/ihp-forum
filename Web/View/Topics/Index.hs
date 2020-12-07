@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data IndexView = IndexView { topics :: [Topic] }
 
-instance View IndexView ViewContext where
+instance View IndexView where
     html IndexView { .. } = [hsx|
         {forEach topics renderTopic}
     |]

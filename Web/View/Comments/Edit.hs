@@ -7,7 +7,7 @@ data EditView = EditView
     , badges :: [Include "userId" UserBadge]
     }
 
-instance View EditView ViewContext where
+instance View EditView where
     html EditView { .. } = [hsx|
         <div class="row thread mb-5">
             <div class="col-3 user-col">
@@ -35,8 +35,6 @@ instance View EditView ViewContext where
             renderBadges author userbadge= when (author == (get #userId userbadge)) [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
                             badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
-            renderBadges _ _ = [hsx||]
-
             renderForm comment = formFor comment [hsx|
                 {hiddenField #threadId}
                 {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }

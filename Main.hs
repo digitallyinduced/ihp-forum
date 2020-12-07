@@ -11,10 +11,10 @@ import Admin.FrontController
 import Admin.Types
 
 instance FrontController RootApplication where
-    controllers = [
-            mountFrontController WebApplication
-            , mountFrontController AdminApplication
+    controllers =
+        [   mountFrontController WebApplication
+        ,   mountFrontController AdminApplication
         ]
 
 main :: IO ()
-main = IHP.Server.run
+main = IHP.Server.run config

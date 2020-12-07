@@ -3,7 +3,7 @@ import Admin.View.Prelude
 
 data IndexView = IndexView { admins :: [Admin] }
 
-instance View IndexView ViewContext where
+instance View IndexView where
     html IndexView { .. } = [hsx|
         <nav>
             <ol class="breadcrumb">

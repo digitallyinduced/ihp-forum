@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data EditView = EditView { user :: User }
 
-instance View EditView ViewContext where
+instance View EditView where
     html EditView { .. } = [hsx|
         <h1>Update Your Profile Information</h1>
         {renderForm user}

@@ -4,7 +4,7 @@ import Application.Helper.View
 
 data IndexView = IndexView { userBadges :: [Include "userId" UserBadge] }
 
-instance View IndexView ViewContext where
+instance View IndexView where
     html IndexView { .. } = [hsx|
         <nav>
             <ol class="breadcrumb">

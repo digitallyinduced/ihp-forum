@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data NewView = NewView { user :: User }
 
-instance View NewView ViewContext where
+instance View NewView where
     html NewView { .. } = [hsx|
         <div id={currentViewId}>
             <h1>Register</h1>

@@ -3,7 +3,7 @@ import Web.View.Prelude
 
 data NewView = NewView { thread :: Thread, topics :: [Topic] }
 
-instance View NewView ViewContext where
+instance View NewView where
     html NewView { .. } = [hsx|
         <h1>New Thread</h1>
         {renderForm thread}
