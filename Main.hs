@@ -9,12 +9,16 @@ import Web.FrontController
 import Web.Types
 import Admin.FrontController
 import Admin.Types
+import IHP.Job.Types
 
 instance FrontController RootApplication where
     controllers =
         [   mountFrontController WebApplication
         ,   mountFrontController AdminApplication
         ]
+
+instance Worker RootApplication where
+    workers _ = []
 
 main :: IO ()
 main = IHP.Server.run config
