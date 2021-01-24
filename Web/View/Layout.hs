@@ -25,7 +25,9 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
 <body>
     <div class="container mt-4">
         <nav class="navbar navbar-expand-lg navbar-light mb-4">
-            <a class="navbar-brand" href="/">λ IHP Forum</a>
+            <a class="navbar-brand" href="/">
+                <img src="/ihp.svg" class="d-inline-block align-to mr-2" style="height: 1.5rem"/> Forum
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
