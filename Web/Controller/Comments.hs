@@ -76,6 +76,8 @@ instance Controller CommentsController where
                         |> set #lastActivityAt now
                         |> updateRecord
 
+                    sendNewCommentNotification thread
+
                     redirectTo ShowThreadAction { threadId = get #threadId comment }
 
     action DeleteCommentAction { commentId } = do
@@ -89,3 +91,8 @@ instance Controller CommentsController where
 buildComment comment = comment
     |> fill @'["body"]
     |> validateField #body nonEmpty
+
+sendNewCommentNotification thread = do
+    let title = get #title thread
+    let url = urlTo ShowThreadAction { threadId = get #id thread}
+    sendToSlackAsync [text|New Forum Comment on $title. $url|]

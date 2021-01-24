@@ -8,3 +8,6 @@ config :: ConfigBuilder
 config = do
     option Development
     option (AppHostname "localhost")
+
+slackWebHook :: Maybe String
+slackWebHook = Nothing

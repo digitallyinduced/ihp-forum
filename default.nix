@@ -14,6 +14,8 @@ let
             p.ihp
             mmark
             mmark-ext
+            wreq
+            neat-interpolation
         ];
         otherDeps = p: with p; [
             # Native dependencies, e.g. imagemagick

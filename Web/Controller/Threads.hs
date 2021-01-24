@@ -88,6 +88,8 @@ instance Controller ThreadsController where
                         |> set #lastActivityAt now
                         |> updateRecord
 
+                    sendNewThreadNotification thread
+
                     let threadId = get #id thread
                     redirectTo ShowThreadAction { threadId }
 
@@ -107,3 +109,8 @@ buildThread thread = thread
 
 topicIsSelected topicId | topicId == def = Failure "Please pick a topic"
 topicIsSelected _ = Success
+
+sendNewThreadNotification thread = do
+    let title = get #title thread
+    let url = urlTo ShowThreadAction { threadId = get #id thread}
+    sendToSlackAsync [text|New Forum Thread: $title. $url|]
