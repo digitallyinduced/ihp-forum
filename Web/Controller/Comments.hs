@@ -95,4 +95,4 @@ buildComment comment = comment
 sendNewCommentNotification thread = do
     let title = get #title thread
     let url = urlTo ShowThreadAction { threadId = get #id thread}
-    sendToSlackAsync [text|New Forum Comment on $title. $url|]
+    sendToSlackAsync [text|New Comment on $title. $url|]
