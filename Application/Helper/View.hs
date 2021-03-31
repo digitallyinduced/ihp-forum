@@ -16,7 +16,7 @@ import Generated.Types
 
 renderMarkdown text =
     case text |> MMark.parse "" of
-        Left error -> "Something went wrong"
+        Left error -> [hsx|{text}|]
         Right markdown ->
                 markdown
                 |> MMark.useExtension ghcSyntaxHighlighter
