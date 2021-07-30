@@ -20,7 +20,7 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
     {stylesheets}
     {scripts}
 
-    <title>IHP Forum</title>
+    <title>{pageTitleOrDefault "IHP Forum"}</title>
 </head>
 <body>
     <div class="container mt-4">

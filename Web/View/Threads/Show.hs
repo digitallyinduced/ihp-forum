@@ -9,6 +9,9 @@ data ShowView = ShowView
     }
 
 instance View ShowView where
+    beforeRender ShowView { .. } = do
+        setTitle ((get #title thread) <> " - IHP Forum")
+
     html ShowView { .. } = [hsx|
         <div class="row thread mb-5">
             <div class="col-3 user-col">
