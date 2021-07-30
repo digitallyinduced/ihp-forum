@@ -7,6 +7,7 @@ import Web.View.Comments.Show
 import Web.View.Comments.New
 import Web.View.Comments.Show
 import Web.View.Comments.Edit
+import Web.Mail.Comments.NewCommentNotification
 
 instance Controller CommentsController where
     beforeAction = ensureIsUser
@@ -77,6 +78,7 @@ instance Controller CommentsController where
                         |> updateRecord
 
                     sendNewCommentNotification thread
+                    sendEmailNotification thread comment
 
                     redirectTo ShowThreadAction { threadId = get #threadId comment }
 
@@ -96,3 +98,17 @@ sendNewCommentNotification thread = do
     let title = get #title thread
     let url = urlTo ShowThreadAction { threadId = get #id thread}
     sendToSlackAsync [text|New Comment on $title. $url|]
+
+sendEmailNotification thread comment = do
+    usersThatCommented <- query @User
+            |> innerJoin @Comment (#id, #userId)
+            |> filterWhereJoinedTable @Comment (#threadId, get #id thread)
+            |> distinctOn #id
+            |> fetch
+
+    -- https://github.com/digitallyinduced/ihp/issues/1015
+    let otherUsersThatCommented = usersThatCommented
+            |> filter (\user -> get #id user /= currentUserId)
+
+    forEach otherUsersThatCommented \user -> do
+        sendMail NewCommentNotificationMail { .. }
