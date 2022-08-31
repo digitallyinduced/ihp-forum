@@ -16,26 +16,25 @@ instance Controller UsersController where
     action ShowUserAction { userId } = do
         user <- fetch userId
 
-        threads <- user
-            |> get #threads
+        threads <- user.threads
             |> orderByDesc #createdAt
             |> fetch
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId
 
-        badges <- query @UserBadge 
-            |> filterWhere (#userId, userId) 
+        badges <- query @UserBadge
+            |> filterWhere (#userId, userId)
             |> fetch
         render ShowView { .. }
 
     action EditUserAction { userId } = do
         user <- fetch userId
-        accessDeniedUnless (get #id user == currentUserId)
+        accessDeniedUnless (user.id == currentUserId)
         render EditView { .. }
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
-        accessDeniedUnless (get #id user == currentUserId)
+        accessDeniedUnless (user.id == currentUserId)
         user
             |> fill @["name", "githubName"]
             |> ifValid \case
@@ -53,9 +52,9 @@ instance Controller UsersController where
             |> validateField #passwordHash nonEmpty
             |> validateField #name nonEmpty
             |> ifValid \case
-                Left user -> render NewView { .. } 
+                Left user -> render NewView { .. }
                 Right user -> do
-                    hashed <- hashPassword (get #passwordHash user)
+                    hashed <- hashPassword (user.passwordHash)
                     user <- user
                         |> set #passwordHash hashed
                         |> createRecord

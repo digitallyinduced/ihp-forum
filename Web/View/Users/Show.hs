@@ -13,7 +13,7 @@ instance View ShowView where
     html ShowView { .. } = [hsx|
         <div class="mb-5">
             {renderPicture user}
-            <h1>{get #name user}</h1>
+            <h1>{user.name}</h1>
             <a class="btn btn-outline-primary" href={githubUrl}>
                 Show GitHub Profile
             </a>
@@ -22,12 +22,12 @@ instance View ShowView where
             </div>
         </div>
 
-        <h2>Threads by {get #name user}</h2>
+        <h2>Threads by {user.name}</h2>
         {forEach threads renderThread}
     |]
         where
-            githubUrl = ("https://github.com/" :: Text) <> get #githubName user
+            githubUrl = ("https://github.com/" :: Text) <> user.githubName
 
             renderBadges userbadge = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
-                            badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
+                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)

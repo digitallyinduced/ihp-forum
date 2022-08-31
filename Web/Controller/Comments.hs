@@ -28,7 +28,7 @@ instance Controller CommentsController where
 
     action EditCommentAction { commentId } = do
         comment <- fetch commentId
-        thread <- fetch (get #threadId comment)
+        thread <- fetch comment.threadId
                   >>= fetchRelated #userId
         badges <- query @UserBadge
                   |> fetch
@@ -41,7 +41,7 @@ instance Controller CommentsController where
             |> buildComment
             |> ifValid \case
                 Left comment -> do
-                    thread <- fetch (get #threadId comment)
+                    thread <- fetch comment.threadId
                               >>= fetchRelated #userId
                     badges <- query @UserBadge
                               |> fetch
@@ -50,7 +50,7 @@ instance Controller CommentsController where
                 Right comment -> do
                     comment <- comment |> updateRecord
                     setSuccessMessage "Comment updated"
-                    let threadId = get #threadId comment
+                    let threadId = comment.threadId
                     redirectTo ShowThreadAction { .. }
 
     action CreateCommentAction = do
@@ -61,7 +61,7 @@ instance Controller CommentsController where
             |> set #userId currentUserId
             |> ifValid \case
                 Left comment -> do
-                    thread <- fetch (get #threadId comment)
+                    thread <- fetch comment.threadId
                         >>= fetchRelated #userId
                     badges <- query @UserBadge
                         |> fetch
@@ -71,8 +71,8 @@ instance Controller CommentsController where
                     comment <- comment |> createRecord
 
                     now <- getCurrentTime
-                    thread <- fetch (get #threadId comment)
-                    topic <- fetch (get #topicId thread)
+                    thread <- fetch comment.threadId
+                    topic <- fetch thread.topicId
                     topic
                         |> set #lastActivityAt now
                         |> updateRecord
@@ -80,14 +80,14 @@ instance Controller CommentsController where
                     sendNewCommentNotification thread
                     sendEmailNotification thread comment
 
-                    redirectTo ShowThreadAction { threadId = get #threadId comment }
+                    redirectTo ShowThreadAction { threadId = comment.threadId }
 
     action DeleteCommentAction { commentId } = do
         comment <- fetch commentId
-        accessDeniedUnless (get #userId comment == currentUserId)
+        accessDeniedUnless (comment.userId == currentUserId)
         deleteRecord comment
         setSuccessMessage "Comment deleted"
-        let threadId = get #threadId comment
+        let threadId = comment.threadId
         redirectTo ShowThreadAction { threadId }
 
 buildComment comment = comment
@@ -95,20 +95,20 @@ buildComment comment = comment
     |> validateField #body nonEmpty
 
 sendNewCommentNotification thread = do
-    let title = get #title thread
-    let url = urlTo ShowThreadAction { threadId = get #id thread}
+    let title = thread.title
+    let url = urlTo ShowThreadAction { threadId = thread.id}
     sendToSlackAsync [text|New Comment on $title. $url|]
 
 sendEmailNotification thread comment = do
     usersThatCommented <- query @User
             |> innerJoin @Comment (#id, #userId)
-            |> filterWhereJoinedTable @Comment (#threadId, get #id thread)
+            |> filterWhereJoinedTable @Comment (#threadId, thread.id)
             |> distinctOn #id
             |> fetch
 
     -- https://github.com/digitallyinduced/ihp/issues/1015
     let otherUsersThatCommented = usersThatCommented
-            |> filter (\user -> get #id user /= currentUserId)
+            |> filter (\user -> user.id /= currentUserId)
 
     forEach otherUsersThatCommented \user -> do
         sendMail NewCommentNotificationMail { .. }
