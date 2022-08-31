@@ -10,25 +10,25 @@ data ShowView = ShowView
 
 instance View ShowView where
     beforeRender ShowView { .. } = do
-        setTitle ((get #title thread) <> " - IHP Forum")
+        setTitle (thread.title <> " - IHP Forum")
 
     html ShowView { .. } = [hsx|
         <div class="row thread mb-5">
             <div class="col-3 user-col">
-                <a class="user-col" href={ShowUserAction (get #id author)}>
+                <a class="user-col" href={ShowUserAction author.id}>
                     {renderPicture author}
-                    {get #name author}
+                    {author.name}
                 </a>
                 <tr> {forEach badges (renderBadges author)} </tr>
-                {when (Just (get #userId thread |> get #id) == fmap (get #id) currentUserOrNothing) threadOptions}
+                {when (Just thread.userId.id == fmap (.id) currentUserOrNothing) threadOptions}
             </div>
 
             <div class="col-9 thread-content">
                 <div class="text-muted thread-created-at">
-                    {get #createdAt thread |> timeAgo}
+                    {timeAgo thread.createdAt}
                 </div>
-                <h1 class="thread-title">{get #title thread}</h1>
-                <div class="thread-body">{get #body thread |> renderMarkdown}</div>
+                <h1 class="thread-title">{thread.title}</h1>
+                <div class="thread-body">{renderMarkdown thread.body}</div>
             </div>
         </div>
 
@@ -40,7 +40,7 @@ instance View ShowView where
             </div>
 
             <div class="col-9 mb-5 text-center">
-                <a class="btn btn-primary" href={NewCommentAction (get #id thread)}>Add Comment</a>
+                <a class="btn btn-primary" href={NewCommentAction thread.id}>Add Comment</a>
             </div>
         </div>
     |]
@@ -48,41 +48,41 @@ instance View ShowView where
         where
             threadOptions = [hsx|
                 <p class="mt-3">
-                    <a href={EditThreadAction (get #id thread)} class="text-muted d-block">Edit thread</a>
-                    <a href={DeleteThreadAction (get #id thread)} class="text-muted js-delete d-block">Delete this thread</a>
+                    <a href={EditThreadAction thread.id} class="text-muted d-block">Edit thread</a>
+                    <a href={DeleteThreadAction thread.id} class="text-muted js-delete d-block">Delete this thread</a>
                 </p>
             |]
 
-            author = get #userId thread
+            author = thread.userId
 
             renderBadges author userbadge
-                     | (author == (get #userId userbadge)) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+                     | (author == userbadge.userId) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
                         where
-                            badgeTuple = fromMaybe ("", "") (lookup (get #badge userbadge) badgeMap)
+                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
             renderBadges _ _ = [hsx||]
 
             renderComment comment = [hsx|
                 <div class="row comment">
                     <div class="col-3 user-col">
-                        {renderPicture (get #userId comment)}
-                        {get #userId comment |> get #name}
-                        <tr> {forEach badges (renderBadges (get #userId comment))} </tr>
+                        {renderPicture comment.userId}
+                        {comment.userId.name}
+                        <tr> {forEach badges (renderBadges comment.userId)} </tr>
                     </div>
 
                     <div class="col-9">
                         <div class="comment-meta">
-                            {get #createdAt comment |> timeAgo}
+                            {timeAgo comment.createdAt}
 
                             {when currentUserIsAuthor commentActions}
                         </div>
-                        <div class="comment-body">{get #body comment |> renderMarkdown}</div>
+                        <div class="comment-body">{renderMarkdown comment.body}</div>
 
                     </div>
                 </div>
             |]
                 where
-                    currentUserIsAuthor = Just (get #userId comment |> get #id) == (fmap (get #id) currentUserOrNothing)
+                    currentUserIsAuthor = Just comment.userId.id == (fmap (.id) currentUserOrNothing)
                     commentActions = [hsx|
-                        <a href={EditCommentAction (get #id comment)}>Edit Comment</a>
-                        <a href={DeleteCommentAction (get #id comment)} class="js-delete">Delete Comment</a>
+                        <a href={EditCommentAction comment.id}>Edit Comment</a>
+                        <a href={DeleteCommentAction comment.id} class="js-delete">Delete Comment</a>
                     |]

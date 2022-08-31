@@ -9,7 +9,7 @@ data ShowView = ShowView
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
-        <h1>{get #name topic}</h1>
+        <h1>{topic.name}</h1>
 
         <div class="threads">
             {forEach threads renderThread}

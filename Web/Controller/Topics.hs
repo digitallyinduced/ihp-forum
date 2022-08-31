@@ -19,8 +19,7 @@ instance Controller TopicsController where
 
     action ShowTopicAction { topicId } = do
         topic <- fetch topicId
-        threads <- topic
-            |> get #threads
+        threads <- topic.threads
             |> fetch
             >>= collectionFetchRelated #userId
             >>= collectionFetchRelated #topicId

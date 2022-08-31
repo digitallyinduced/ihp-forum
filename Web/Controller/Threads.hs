@@ -30,13 +30,12 @@ instance Controller ThreadsController where
         thread <- fetch threadId
             >>= fetchRelated #userId
 
-        comments <- thread
-                |> get #comments
+        comments <- thread.comments
                 |> orderBy #createdAt
                 |> fetch
                 >>= collectionFetchRelated #userId
 
-        badges <- query @UserBadge 
+        badges <- query @UserBadge
             |> fetch
             >>= collectionFetchRelated #userId
 
@@ -45,7 +44,7 @@ instance Controller ThreadsController where
     action EditThreadAction { threadId } = do
         ensureIsUser
         thread <- fetch threadId
-        accessDeniedUnless (get #userId thread == currentUserId)
+        accessDeniedUnless (thread.userId == currentUserId)
 
         topics <- query @Topic |> fetch
         render EditView { .. }
@@ -53,7 +52,7 @@ instance Controller ThreadsController where
     action UpdateThreadAction { threadId } = do
         ensureIsUser
         thread <- fetch threadId
-        accessDeniedUnless (get #userId thread == currentUserId)
+        accessDeniedUnless (thread.userId == currentUserId)
 
         thread
             |> buildThread
@@ -64,7 +63,7 @@ instance Controller ThreadsController where
                 Right thread -> do
                     thread <- thread |> updateRecord
                     setSuccessMessage "Thread updated"
-                    let threadId = get #id thread
+                    let threadId = thread.id
                     redirectTo ShowThreadAction { threadId }
 
     action CreateThreadAction = do
@@ -77,12 +76,12 @@ instance Controller ThreadsController where
             |> ifValid \case
                 Left thread -> do
                     topics <- query @Topic |> fetch
-                    render NewView { .. } 
+                    render NewView { .. }
                 Right thread -> do
                     thread <- thread |> createRecord
-                    
+
                     now <- getCurrentTime
-                    topic <- fetch (get #topicId thread)
+                    topic <- fetch thread.topicId
                     topic
                         |> incrementField #threadsCount
                         |> set #lastActivityAt now
@@ -90,13 +89,13 @@ instance Controller ThreadsController where
 
                     sendNewThreadNotification thread
 
-                    let threadId = get #id thread
+                    let threadId = thread.id
                     redirectTo ShowThreadAction { threadId }
 
     action DeleteThreadAction { threadId } = do
         ensureIsUser
         thread <- fetch threadId
-        accessDeniedUnless (get #userId thread == currentUserId)
+        accessDeniedUnless (thread.userId == currentUserId)
         deleteRecord thread
         setSuccessMessage "Thread deleted"
         redirectTo ThreadsAction
@@ -111,6 +110,6 @@ topicIsSelected topicId | topicId == def = Failure "Please pick a topic"
 topicIsSelected _ = Success
 
 sendNewThreadNotification thread = do
-    let title = get #title thread
-    let url = urlTo ShowThreadAction { threadId = get #id thread}
+    let title = thread.title
+    let url = urlTo ShowThreadAction { threadId = thread.id}
     sendToSlackAsync [text|New: $title. $url|]

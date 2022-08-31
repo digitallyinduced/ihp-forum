@@ -12,17 +12,17 @@ instance View IndexView where
 renderTopic :: Topic -> Html
 renderTopic topic = [hsx|
     <div class="topic">
-        <a class="topic-title" href={ShowTopicAction (get #id topic)}>
-            {get #name topic}
+        <a class="topic-title" href={ShowTopicAction topic.id}>
+            {topic.name}
         </a>
 
         <div class="topic-description">
-            {get #description topic}
+            {topic.description}
         </div>
 
         <div class="topic-meta">
-            Last activity: {get #lastActivityAt topic |> timeAgo}
-            , {tshow (get #threadsCount topic) <> " Threads"}
+            Last activity: {timeAgo topic.lastActivityAt}
+            , {tshow (topic.threadsCount) <> " Threads"}
         </div>
     </div>
 |]

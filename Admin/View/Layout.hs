@@ -38,7 +38,7 @@ renderLoggedInAs (Just admin) = [hsx|
 <div class="navbar-nav">
     <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Logged in as: {get #name admin}
+            Logged in as: {admin.name}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item js-delete js-delete-no-confirm" href={DeleteSessionAction}>Logout</a>

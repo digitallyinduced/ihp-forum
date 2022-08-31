@@ -20,4 +20,4 @@ instance View NewView where
 instance CanSelect Topic where
     type SelectValue Topic = Id Topic
     selectValue = get #id
-    selectLabel topic = get #name topic <> ": " <> get #description topic
+    selectLabel topic = topic.name <> ": " <> topic.description

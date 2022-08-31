@@ -30,8 +30,8 @@ instance View IndexView where
 renderAdmin admin = [hsx|
     <tr>
         <td>{admin}</td>
-        <td><a href={ShowAdminAction (get #id admin)}>Show</a></td>
-        <td><a href={EditAdminAction (get #id admin)} class="text-muted">Edit</a></td>
-        <td><a href={DeleteAdminAction (get #id admin)} class="js-delete text-muted">Delete</a></td>
+        <td><a href={ShowAdminAction admin.id}>Show</a></td>
+        <td><a href={EditAdminAction admin.id} class="text-muted">Edit</a></td>
+        <td><a href={DeleteAdminAction admin.id} class="js-delete text-muted">Delete</a></td>
     </tr>
 |]

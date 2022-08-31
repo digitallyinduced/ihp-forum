@@ -88,10 +88,10 @@ renderLoggedInAs (Just user) = [hsx|
 <div class="navbar-nav">
     <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Logged in as: {get #name user}
+            Logged in as: {user.name}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href={EditUserAction (get #id user)}>Update Profile</a>
+            <a class="dropdown-item" href={EditUserAction (user.id)}>Update Profile</a>
             <a class="dropdown-item js-delete js-delete-no-confirm" href={DeleteSessionAction}>Logout</a>
         </div>
     </div>
@@ -154,4 +154,5 @@ renderPicture user = preEscapedToHtml ("<?xml version=\"1.0\" encoding=\"utf-8\"
             <text x="50%" y="60%" text-anchor="middle" line-spacing="60" letter-spacing="1.481481" style="font: bold 200% sans-serif" fill="hsla(196, 13%, 80%, 1)" class="icon">{text}</text>
         </svg>
     |]
-        where text = get #name user
+        where
+            text = user.name
