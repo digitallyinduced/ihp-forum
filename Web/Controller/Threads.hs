@@ -112,4 +112,4 @@ topicIsSelected _ = Success
 sendNewThreadNotification thread = do
     let title = thread.title
     let url = urlTo ShowThreadAction { threadId = thread.id}
-    sendToSlackAsync [text|New: $title. $url|]
+    sendToSlackAsync [trimming|New: $title. $url|]

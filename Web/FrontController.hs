@@ -11,7 +11,6 @@ import Web.Controller.Topics
 import Web.Controller.Comments
 import Web.Controller.Users
 import Web.Controller.Threads
-import IHP.Welcome.Controller
 import IHP.LoginSupport.Middleware
 import Web.Controller.Sessions
 
