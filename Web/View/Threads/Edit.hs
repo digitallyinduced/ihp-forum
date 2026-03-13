@@ -1,5 +1,6 @@
 module Web.View.Threads.Edit where
 import Web.View.Prelude
+import Web.View.Threads.New ()
 
 data EditView = EditView { thread :: Thread, topics :: [Topic] }
 
@@ -16,8 +17,3 @@ instance View EditView where
                 {(selectField #topicId topics) { helpText = "Please pick the topic that best matches your question"}}
                 {submitButton}
             |]
-
-instance CanSelect Topic where
-    type SelectValue Topic = Id Topic
-    selectValue = get #id
-    selectLabel topic = topic.name <> ": " <> topic.description

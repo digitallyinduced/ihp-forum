@@ -9,7 +9,6 @@ import Admin.View.Layout
 
 -- Controller Imports
 import Admin.Controller.Admins
-import IHP.Welcome.Controller
 import IHP.LoginSupport.Middleware
 import Admin.Controller.Sessions
 

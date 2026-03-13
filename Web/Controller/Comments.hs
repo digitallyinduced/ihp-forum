@@ -1,6 +1,7 @@
 module Web.Controller.Comments where
 
 import Web.Controller.Prelude
+import IHP.Mail
 import Web.View.Comments.New
 import Web.View.Comments.Edit
 import Web.View.Comments.Show
@@ -97,7 +98,7 @@ buildComment comment = comment
 sendNewCommentNotification thread = do
     let title = thread.title
     let url = urlTo ShowThreadAction { threadId = thread.id}
-    sendToSlackAsync [text|New Comment on $title. $url|]
+    sendToSlackAsync [trimming|New Comment on $title. $url|]
 
 sendEmailNotification thread comment = do
     usersThatCommented <- query @User
