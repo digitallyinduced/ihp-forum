@@ -2,8 +2,6 @@ module Web.View.Layout (defaultLayout, Html, renderPicture) where
 
 import IHP.ViewPrelude
 import IHP.Environment
-import qualified Text.Blaze.Html5            as H
-import qualified Text.Blaze.Html5.Attributes as A
 import Web.Types
 import Web.Routes
 import qualified IHP.FrameworkConfig as FrameworkConfig
@@ -13,7 +11,9 @@ import Application.Helper.View
 import Generated.Types
 
 defaultLayout :: Html -> Html
-defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
+defaultLayout inner = [hsx|
+<!DOCTYPE html>
+<html lang="en">
 <head>
     {metaTags}
 
@@ -81,6 +81,7 @@ defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
 
     </footer>
 </body>
+</html>
 |]
 
 renderLoggedInAs :: Maybe User -> Html
