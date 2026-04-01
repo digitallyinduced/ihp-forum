@@ -101,10 +101,12 @@ sendNewCommentNotification thread = do
     sendToSlackAsync [trimming|New Comment on $title. $url|]
 
 sendEmailNotification thread comment = do
+    comments <- query @Comment
+            |> filterWhere (#threadId, thread.id)
+            |> fetch
+    let userIds = comments |> map (.userId) |> nub
     usersThatCommented <- query @User
-            |> innerJoin @Comment (#id, #userId)
-            |> filterWhereJoinedTable @Comment (#threadId, thread.id)
-            |> distinctOn #id
+            |> filterWhereIdIn userIds
             |> fetch
 
     -- https://github.com/digitallyinduced/ihp/issues/1015
