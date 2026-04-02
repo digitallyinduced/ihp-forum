@@ -5,9 +5,6 @@ import IHP.Mail
 import Web.View.Comments.New
 import Web.View.Comments.Edit
 import Web.View.Comments.Show
-import Web.View.Comments.New
-import Web.View.Comments.Show
-import Web.View.Comments.Edit
 import Web.Mail.Comments.NewCommentNotification
 
 instance Controller CommentsController where
@@ -15,12 +12,12 @@ instance Controller CommentsController where
 
     action NewCommentAction { threadId } = do
         thread <- fetch threadId
-            >>= fetchRelated #userId
+        author <- fetch thread.userId
         let comment = newRecord
                 |> set #threadId threadId
-        badges <- query @UserBadge
-            |> fetch
-            >>= collectionFetchRelated #userId
+        badges <- query @UserBadge |> fetch
+        let badgeUserIds = badges |> map (.userId) |> nub
+        badgeUsers <- fetch badgeUserIds
         render NewView { .. }
 
     action ShowCommentAction { commentId } = do
@@ -30,10 +27,10 @@ instance Controller CommentsController where
     action EditCommentAction { commentId } = do
         comment <- fetch commentId
         thread <- fetch comment.threadId
-                  >>= fetchRelated #userId
-        badges <- query @UserBadge
-                  |> fetch
-                  >>= collectionFetchRelated #userId
+        author <- fetch thread.userId
+        badges <- query @UserBadge |> fetch
+        let badgeUserIds = badges |> map (.userId) |> nub
+        badgeUsers <- fetch badgeUserIds
         render EditView { .. }
 
     action UpdateCommentAction { commentId } = do
@@ -43,10 +40,10 @@ instance Controller CommentsController where
             |> ifValid \case
                 Left comment -> do
                     thread <- fetch comment.threadId
-                              >>= fetchRelated #userId
-                    badges <- query @UserBadge
-                              |> fetch
-                              >>= collectionFetchRelated #userId
+                    author <- fetch thread.userId
+                    badges <- query @UserBadge |> fetch
+                    let badgeUserIds = badges |> map (.userId) |> nub
+                    badgeUsers <- fetch badgeUserIds
                     render EditView { .. }
                 Right comment -> do
                     comment <- comment |> updateRecord
@@ -63,10 +60,10 @@ instance Controller CommentsController where
             |> ifValid \case
                 Left comment -> do
                     thread <- fetch comment.threadId
-                        >>= fetchRelated #userId
-                    badges <- query @UserBadge
-                        |> fetch
-                        >>= collectionFetchRelated #userId
+                    author <- fetch thread.userId
+                    badges <- query @UserBadge |> fetch
+                    let badgeUserIds = badges |> map (.userId) |> nub
+                    badgeUsers <- fetch badgeUserIds
                     render NewView { .. }
                 Right comment -> do
                     comment <- comment |> createRecord

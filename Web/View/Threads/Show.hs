@@ -1,11 +1,14 @@
 module Web.View.Threads.Show where
 import Web.View.Prelude
-import Application.Helper.View (badgeMap)
+import Application.Helper.View (badgeMap, renderBadgeFor)
 
 data ShowView = ShowView
-    { thread :: Include "userId" Thread
-    , comments :: [Include "userId" Comment]
-    , badges :: [Include "userId" UserBadge]
+    { thread :: Thread
+    , author :: User
+    , comments :: [Comment]
+    , commentUsers :: [User]
+    , badges :: [UserBadge]
+    , badgeUsers :: [User]
     }
 
 instance View ShowView where
@@ -19,8 +22,8 @@ instance View ShowView where
                     {renderPicture author}
                     {author.name}
                 </a>
-                <tr> {forEach badges (renderBadges author)} </tr>
-                {when (Just thread.userId.id == fmap (.id) currentUserOrNothing) threadOptions}
+                <tr> {forEach badges (renderBadgeFor allUsers author)} </tr>
+                {when (Just thread.userId == fmap (.id) currentUserOrNothing) threadOptions}
             </div>
 
             <div class="col-9 thread-content">
@@ -46,6 +49,8 @@ instance View ShowView where
     |]
 
         where
+            allUsers = author : commentUsers <> badgeUsers
+
             threadOptions = [hsx|
                 <p class="mt-3">
                     <a href={EditThreadAction thread.id} class="text-muted d-block">Edit thread</a>
@@ -53,20 +58,16 @@ instance View ShowView where
                 </p>
             |]
 
-            author = thread.userId
+            lookupUser :: Id User -> User
+            lookupUser userId = fromMaybe author (find (\u -> u.id == userId) allUsers)
 
-            renderBadges author userbadge
-                     | (author == userbadge.userId) = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
-                        where
-                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
-            renderBadges _ _ = [hsx||]
-
+            renderComment :: Comment -> Html
             renderComment comment = [hsx|
                 <div class="row comment">
                     <div class="col-3 user-col">
-                        {renderPicture comment.userId}
-                        {comment.userId.name}
-                        <tr> {forEach badges (renderBadges comment.userId)} </tr>
+                        {renderPicture commentUser}
+                        {commentUser.name}
+                        <tr> {forEach badges (renderBadgeFor allUsers commentUser)} </tr>
                     </div>
 
                     <div class="col-9">
@@ -81,7 +82,8 @@ instance View ShowView where
                 </div>
             |]
                 where
-                    currentUserIsAuthor = Just comment.userId.id == (fmap (.id) currentUserOrNothing)
+                    commentUser = lookupUser comment.userId
+                    currentUserIsAuthor = Just commentUser.id == (fmap (.id) currentUserOrNothing)
                     commentActions = [hsx|
                         <a href={EditCommentAction comment.id}>Edit Comment</a>
                         <a href={DeleteCommentAction comment.id} class="js-delete">Delete Comment</a>

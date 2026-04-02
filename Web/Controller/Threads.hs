@@ -5,18 +5,16 @@ import Web.View.Threads.Index
 import Web.View.Threads.New
 import Web.View.Threads.Edit
 import Web.View.Threads.Show
-import Web.View.Threads.Index
-import Web.View.Threads.New
-import Web.View.Threads.Show
-import Web.View.Threads.Edit
 
 instance Controller ThreadsController where
     action ThreadsAction = do
         threads <- query @Thread
             |> orderByDesc #createdAt
             |> fetch
-            >>= collectionFetchRelated #userId
-            >>= collectionFetchRelated #topicId
+        let userIds = threads |> map (.userId) |> nub
+        let topicIds = threads |> map (.topicId) |> nub
+        threadUsers <- fetch userIds
+        threadTopics <- fetch topicIds
         render IndexView { .. }
 
     action NewThreadAction = do
@@ -28,16 +26,18 @@ instance Controller ThreadsController where
 
     action ShowThreadAction { threadId } = do
         thread <- fetch threadId
-            >>= fetchRelated #userId
+        author <- fetch thread.userId
 
-        comments <- thread.comments
+        comments <- query @Comment
+                |> filterWhere (#threadId, threadId)
                 |> orderBy #createdAt
                 |> fetch
-                >>= collectionFetchRelated #userId
+        let commentUserIds = comments |> map (.userId) |> nub
+        commentUsers <- fetch commentUserIds
 
-        badges <- query @UserBadge
-            |> fetch
-            >>= collectionFetchRelated #userId
+        badges <- query @UserBadge |> fetch
+        let badgeUserIds = badges |> map (.userId) |> nub
+        badgeUsers <- fetch badgeUserIds
 
         render ShowView { .. }
 

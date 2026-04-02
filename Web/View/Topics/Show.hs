@@ -4,7 +4,9 @@ import Web.View.Threads.Index (renderThread)
 
 data ShowView = ShowView
     { topic :: Topic
-    , threads :: [Include' ["userId", "topicId"] Thread]
+    , threads :: [Thread]
+    , threadUsers :: [User]
+    , threadTopics :: [Topic]
     }
 
 instance View ShowView where
@@ -12,7 +14,7 @@ instance View ShowView where
         <h1>{topic.name}</h1>
 
         <div class="threads">
-            {forEach threads renderThread}
+            {forEach threads (renderThread threadUsers threadTopics)}
         </div>
         {whenEmpty threads emptyTopic}
     |]

@@ -1,8 +1,11 @@
 module Admin.View.UserBadges.Index where
 import Admin.View.Prelude
-import Application.Helper.View
+import Application.Helper.View (renderBadge)
 
-data IndexView = IndexView { userBadges :: [Include "userId" UserBadge] }
+data IndexView = IndexView
+    { userBadges :: [UserBadge]
+    , badgeUsers :: [User]
+    }
 
 instance View IndexView where
     html IndexView { .. } = [hsx|
@@ -26,15 +29,18 @@ instance View IndexView where
             </table>
         </div>
     |]
-
-renderUserBadge userbadge = [hsx|
-    <tr>
-        <td> {userbadge.userId.name} </td>
-        <td><span class={snd badgeTuple}> {fst badgeTuple} </span></td>
-        <td><a href={ShowUserBadgeAction userbadge.id}>Show</a></td>
-        <td><a href={EditUserBadgeAction userbadge.id} class="text-muted">Edit</a></td>
-        <td><a href={DeleteUserBadgeAction userbadge.id} class="js-delete text-muted">Delete</a></td>
-    </tr>
-|]
-    where
-        badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
+      where
+        renderUserBadge :: UserBadge -> Html
+        renderUserBadge userbadge = [hsx|
+            <tr>
+                <td> {userName} </td>
+                <td>{renderBadge userbadge}</td>
+                <td><a href={ShowUserBadgeAction userbadge.id}>Show</a></td>
+                <td><a href={EditUserBadgeAction userbadge.id} class="text-muted">Edit</a></td>
+                <td><a href={DeleteUserBadgeAction userbadge.id} class="js-delete text-muted">Delete</a></td>
+            </tr>
+        |]
+            where
+                userName = case find (\u -> u.id == userbadge.userId) badgeUsers of
+                    Just user -> user.name
+                    Nothing -> ""

@@ -4,9 +4,6 @@ import Web.Controller.Prelude
 import Web.View.Users.New
 import Web.View.Users.Edit
 import Web.View.Users.Show
-import Web.View.Users.New
-import Web.View.Users.Show
-import Web.View.Users.Edit
 
 instance Controller UsersController where
     action NewUserAction = do
@@ -16,11 +13,14 @@ instance Controller UsersController where
     action ShowUserAction { userId } = do
         user <- fetch userId
 
-        threads <- user.threads
+        threads <- query @Thread
+            |> filterWhere (#userId, userId)
             |> orderByDesc #createdAt
             |> fetch
-            >>= collectionFetchRelated #userId
-            >>= collectionFetchRelated #topicId
+        let threadUserIds = threads |> map (.userId) |> nub
+        let topicIds = threads |> map (.topicId) |> nub
+        threadUsers <- fetch threadUserIds
+        threadTopics <- fetch topicIds
 
         badges <- query @UserBadge
             |> filterWhere (#userId, userId)

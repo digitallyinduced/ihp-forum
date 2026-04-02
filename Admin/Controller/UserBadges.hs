@@ -10,9 +10,9 @@ instance Controller UserBadgesController where
     beforeAction = ensureIsAdmin @Admin
 
     action UserBadgesAction = do
-        userBadges <- query @UserBadge 
-            |> fetch
-            >>= collectionFetchRelated #userId
+        userBadges <- query @UserBadge |> fetch
+        let badgeUserIds = userBadges |> map (.userId) |> nub
+        badgeUsers <- fetch badgeUserIds
         render IndexView { .. }
 
     action NewUserBadgeAction = do
