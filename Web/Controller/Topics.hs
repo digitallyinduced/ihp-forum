@@ -19,10 +19,13 @@ instance Controller TopicsController where
 
     action ShowTopicAction { topicId } = do
         topic <- fetch topicId
-        threads <- topic.threads
+        threads <- query @Thread
+            |> filterWhere (#topicId, topicId)
             |> fetch
-            >>= collectionFetchRelated #userId
-            >>= collectionFetchRelated #topicId
+        let threadUserIds = threads |> map (.userId) |> nub
+        let topicIds = threads |> map (.topicId) |> nub
+        threadUsers <- query @User |> filterWhereIdIn threadUserIds |> fetch
+        threadTopics <- query @Topic |> filterWhereIdIn topicIds |> fetch
         render ShowView { .. }
 
     action NewTopicAction = renderNotFound

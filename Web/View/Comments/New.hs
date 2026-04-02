@@ -1,10 +1,13 @@
 module Web.View.Comments.New where
 import Web.View.Prelude
+import Application.Helper.View (badgeMap)
 
 data NewView = NewView
   { comment :: Comment
-  , thread :: Include "userId" Thread
-  , badges :: [Include "userId" UserBadge]
+  , thread :: Thread
+  , author :: User
+  , badges :: [UserBadge]
+  , badgeUsers :: [User]
   }
 
 instance View NewView where
@@ -30,12 +33,16 @@ instance View NewView where
         {renderForm comment}
     |]
       where
-            author = thread.userId
+            lookupUser userId = find (\u -> u.id == userId) badgeUsers
 
-            renderBadges author userbadge = when (author == userbadge.userId) [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
-                        where
-                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
-            renderBadges _ _ = [hsx||]
+            renderBadges :: User -> UserBadge -> Html
+            renderBadges theAuthor userbadge =
+                let badgeUser = fromMaybe theAuthor (lookupUser userbadge.userId)
+                in if theAuthor.id == badgeUser.id
+                    then [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+                    else [hsx||]
+                where
+                    badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
 
             renderForm comment = formFor comment [hsx|
                 {hiddenField #threadId}

@@ -1,10 +1,13 @@
 module Web.View.Comments.Edit where
 import Web.View.Prelude
+import Application.Helper.View (badgeMap)
 
 data EditView = EditView
     { comment :: Comment
-    , thread :: Include "userId" Thread
-    , badges :: [Include "userId" UserBadge]
+    , thread :: Thread
+    , author :: User
+    , badges :: [UserBadge]
+    , badgeUsers :: [User]
     }
 
 instance View EditView where
@@ -30,11 +33,17 @@ instance View EditView where
         {renderForm comment}
     |]
       where
-            author = thread.userId
+            lookupUser userId = find (\u -> u.id == userId) badgeUsers
 
-            renderBadges author userbadge= when (author == userbadge.userId) [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
-                        where
-                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
+            renderBadges :: User -> UserBadge -> Html
+            renderBadges theAuthor userbadge =
+                let badgeUser = fromMaybe theAuthor (lookupUser userbadge.userId)
+                in if theAuthor.id == badgeUser.id
+                    then [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
+                    else [hsx||]
+                where
+                    badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
+
             renderForm comment = formFor comment [hsx|
                 {hiddenField #threadId}
                 {(textareaField #body) { fieldLabel = "Your Comment:", helpText = "You can use markdown here." } }
