@@ -13,8 +13,8 @@ instance Controller ThreadsController where
             |> fetch
         let userIds = threads |> map (.userId) |> nub
         let topicIds = threads |> map (.topicId) |> nub
-        threadUsers <- query @User |> filterWhereIdIn userIds |> fetch
-        threadTopics <- query @Topic |> filterWhereIdIn topicIds |> fetch
+        threadUsers <- fetch userIds
+        threadTopics <- fetch topicIds
         render IndexView { .. }
 
     action NewThreadAction = do
@@ -33,11 +33,11 @@ instance Controller ThreadsController where
                 |> orderBy #createdAt
                 |> fetch
         let commentUserIds = comments |> map (.userId) |> nub
-        commentUsers <- query @User |> filterWhereIdIn commentUserIds |> fetch
+        commentUsers <- fetch commentUserIds
 
         badges <- query @UserBadge |> fetch
         let badgeUserIds = badges |> map (.userId) |> nub
-        badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+        badgeUsers <- fetch badgeUserIds
 
         render ShowView { .. }
 

@@ -17,7 +17,7 @@ instance Controller CommentsController where
                 |> set #threadId threadId
         badges <- query @UserBadge |> fetch
         let badgeUserIds = badges |> map (.userId) |> nub
-        badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+        badgeUsers <- fetch badgeUserIds
         render NewView { .. }
 
     action ShowCommentAction { commentId } = do
@@ -30,7 +30,7 @@ instance Controller CommentsController where
         author <- fetch thread.userId
         badges <- query @UserBadge |> fetch
         let badgeUserIds = badges |> map (.userId) |> nub
-        badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+        badgeUsers <- fetch badgeUserIds
         render EditView { .. }
 
     action UpdateCommentAction { commentId } = do
@@ -43,7 +43,7 @@ instance Controller CommentsController where
                     author <- fetch thread.userId
                     badges <- query @UserBadge |> fetch
                     let badgeUserIds = badges |> map (.userId) |> nub
-                    badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+                    badgeUsers <- fetch badgeUserIds
                     render EditView { .. }
                 Right comment -> do
                     comment <- comment |> updateRecord
@@ -63,7 +63,7 @@ instance Controller CommentsController where
                     author <- fetch thread.userId
                     badges <- query @UserBadge |> fetch
                     let badgeUserIds = badges |> map (.userId) |> nub
-                    badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+                    badgeUsers <- fetch badgeUserIds
                     render NewView { .. }
                 Right comment -> do
                     comment <- comment |> createRecord

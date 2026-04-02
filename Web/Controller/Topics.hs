@@ -24,8 +24,8 @@ instance Controller TopicsController where
             |> fetch
         let threadUserIds = threads |> map (.userId) |> nub
         let topicIds = threads |> map (.topicId) |> nub
-        threadUsers <- query @User |> filterWhereIdIn threadUserIds |> fetch
-        threadTopics <- query @Topic |> filterWhereIdIn topicIds |> fetch
+        threadUsers <- fetch threadUserIds
+        threadTopics <- fetch topicIds
         render ShowView { .. }
 
     action NewTopicAction = renderNotFound

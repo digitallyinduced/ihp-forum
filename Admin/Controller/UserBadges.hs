@@ -12,7 +12,7 @@ instance Controller UserBadgesController where
     action UserBadgesAction = do
         userBadges <- query @UserBadge |> fetch
         let badgeUserIds = userBadges |> map (.userId) |> nub
-        badgeUsers <- query @User |> filterWhereIdIn badgeUserIds |> fetch
+        badgeUsers <- fetch badgeUserIds
         render IndexView { .. }
 
     action NewUserBadgeAction = do
