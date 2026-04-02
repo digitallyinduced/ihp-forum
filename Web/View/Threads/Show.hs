@@ -1,6 +1,6 @@
 module Web.View.Threads.Show where
 import Web.View.Prelude
-import Application.Helper.View (badgeMap)
+import Application.Helper.View (badgeMap, renderBadgeFor)
 
 data ShowView = ShowView
     { thread :: Thread
@@ -22,7 +22,7 @@ instance View ShowView where
                     {renderPicture author}
                     {author.name}
                 </a>
-                <tr> {forEach badges (renderBadges author)} </tr>
+                <tr> {forEach badges (renderBadgeFor allUsers author)} </tr>
                 {when (Just thread.userId == fmap (.id) currentUserOrNothing) threadOptions}
             </div>
 
@@ -49,6 +49,8 @@ instance View ShowView where
     |]
 
         where
+            allUsers = author : commentUsers <> badgeUsers
+
             threadOptions = [hsx|
                 <p class="mt-3">
                     <a href={EditThreadAction thread.id} class="text-muted d-block">Edit thread</a>
@@ -57,16 +59,7 @@ instance View ShowView where
             |]
 
             lookupUser :: Id User -> User
-            lookupUser userId = fromMaybe author (find (\u -> u.id == userId) (commentUsers <> badgeUsers))
-
-            renderBadges :: User -> UserBadge -> Html
-            renderBadges theAuthor userbadge =
-                let badgeUser = lookupUser userbadge.userId
-                in if theAuthor.id == badgeUser.id
-                    then [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
-                    else [hsx||]
-                where
-                    badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
+            lookupUser userId = fromMaybe author (find (\u -> u.id == userId) allUsers)
 
             renderComment :: Comment -> Html
             renderComment comment = [hsx|
@@ -74,7 +67,7 @@ instance View ShowView where
                     <div class="col-3 user-col">
                         {renderPicture commentUser}
                         {commentUser.name}
-                        <tr> {forEach badges (renderBadges commentUser)} </tr>
+                        <tr> {forEach badges (renderBadgeFor allUsers commentUser)} </tr>
                     </div>
 
                     <div class="col-9">

@@ -1,6 +1,6 @@
 module Admin.View.UserBadges.Index where
 import Admin.View.Prelude
-import Application.Helper.View
+import Application.Helper.View (renderBadge)
 
 data IndexView = IndexView
     { userBadges :: [UserBadge]
@@ -30,20 +30,17 @@ instance View IndexView where
         </div>
     |]
       where
-        lookupUser userId = find (\u -> u.id == userId) badgeUsers
-
         renderUserBadge :: UserBadge -> Html
         renderUserBadge userbadge = [hsx|
             <tr>
                 <td> {userName} </td>
-                <td><span class={snd badgeTuple}> {fst badgeTuple} </span></td>
+                <td>{renderBadge userbadge}</td>
                 <td><a href={ShowUserBadgeAction userbadge.id}>Show</a></td>
                 <td><a href={EditUserBadgeAction userbadge.id} class="text-muted">Edit</a></td>
                 <td><a href={DeleteUserBadgeAction userbadge.id} class="js-delete text-muted">Delete</a></td>
             </tr>
         |]
             where
-                badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
-                userName = case lookupUser userbadge.userId of
+                userName = case find (\u -> u.id == userbadge.userId) badgeUsers of
                     Just user -> user.name
                     Nothing -> ""

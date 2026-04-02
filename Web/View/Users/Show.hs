@@ -1,7 +1,7 @@
 module Web.View.Users.Show where
 import Web.View.Prelude hiding (badges)
 import Web.View.Threads.Index (renderThread)
-import Application.Helper.View
+import Application.Helper.View (badgeMap, renderBadge)
 
 data ShowView = ShowView
     { user :: User
@@ -20,7 +20,7 @@ instance View ShowView where
                 Show GitHub Profile
             </a>
             <div class="user-badges">
-            <tr> {forEach badges renderBadges} </tr>
+            <tr> {forEach badges renderBadge} </tr>
             </div>
         </div>
 
@@ -29,7 +29,3 @@ instance View ShowView where
     |]
         where
             githubUrl = ("https://github.com/" :: Text) <> user.githubName
-
-            renderBadges userbadge = [hsx| <span class={snd badgeTuple}> {fst badgeTuple} </span> |]
-                        where
-                            badgeTuple = fromMaybe ("", "") (lookup userbadge.badge badgeMap)
