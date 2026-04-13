@@ -11,7 +11,6 @@ import Web.Controller.Topics
 import Web.Controller.Comments
 import Web.Controller.Users
 import Web.Controller.Threads
-import IHP.LoginSupport.Middleware
 import Web.Controller.Sessions
 
 instance FrontController WebApplication where
@@ -28,4 +27,3 @@ instance FrontController WebApplication where
 instance InitControllerContext WebApplication where
     initContext = do
         setLayout defaultLayout
-        initAuthentication @User
