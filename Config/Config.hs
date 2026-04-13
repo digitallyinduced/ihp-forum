@@ -4,7 +4,7 @@ import IHP.Prelude
 import IHP.Environment
 import IHP.FrameworkConfig
 import qualified IHP.LoginSupport.Middleware as Auth
-import Application.Helper.Controller ()
+import Application.Helper.TypeInstances ()
 import Generated.Types
 
 config :: ConfigBuilder
