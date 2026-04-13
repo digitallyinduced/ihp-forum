@@ -31,8 +31,6 @@ defaultLayout inner = [hsx|
 </body>
 </html>
 |]
-    where
-        currentAdminOrNothing = fromFrozenContext @(Maybe Admin)
 
 renderLoggedInAs :: Maybe Admin -> Html
 renderLoggedInAs (Just admin) = [hsx|

@@ -9,7 +9,6 @@ import Admin.View.Layout
 
 -- Controller Imports
 import Admin.Controller.Admins
-import IHP.LoginSupport.Middleware
 import Admin.Controller.Sessions
 
 instance FrontController AdminApplication where
@@ -23,4 +22,3 @@ instance FrontController AdminApplication where
 instance InitControllerContext AdminApplication where
     initContext = do
         setLayout defaultLayout
-        initAuthentication @Admin
