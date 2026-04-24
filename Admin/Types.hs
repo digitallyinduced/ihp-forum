@@ -28,7 +28,7 @@ data SessionsController
      deriving (Eq, Show, Data)
 
 instance HasNewSessionUrl Admin where
-    newSessionUrl admin = "/admin/NewSession"
+    newSessionUrl admin = "/admin/sessions/new"
 
 data AdminsController
     = AdminsAction

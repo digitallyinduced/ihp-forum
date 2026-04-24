@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  nix-flake-check:
+    name: nix flake check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            accept-flake-config = true
+            extra-substituters = https://digitallyinduced.cachix.org https://devenv.cachix.org https://cachix.cachix.org
+            extra-trusted-public-keys = digitallyinduced.cachix.org-1:y+wQvrnxQ+PdEsCt91rmvv39qRCYzEgGQaldK26hCKE= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM=
+      - uses: cachix/cachix-action@v15
+        with:
+          name: digitallyinduced
+      - name: nix flake check
+        run: nix flake check --impure -L

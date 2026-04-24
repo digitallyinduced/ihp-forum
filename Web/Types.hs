@@ -39,7 +39,7 @@ data CommentsController
     deriving (Eq, Show, Data)
 
 instance HasNewSessionUrl User where
-    newSessionUrl _ = "/NewSession"
+    newSessionUrl _ = "/sessions/new"
 
 data SessionsController
     = NewSessionAction

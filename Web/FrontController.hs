@@ -3,6 +3,7 @@ import IHP.RouterPrelude
 import IHP.ControllerSupport
 import Generated.Types
 import Web.Types
+import Web.Routes (webRoutes)
 import Web.Controller.Prelude
 import Web.View.Layout
 
@@ -14,16 +15,11 @@ import Web.Controller.Threads
 import IHP.LoginSupport.Middleware
 import Web.Controller.Sessions
 
+-- Routes defined via the [routes|webRoutes …|] DSL in Web.Routes.
+-- The splice emits HasPath + CanRoute instances for each action's
+-- controller, plus the `webRoutes` binding below.
 instance FrontController WebApplication where
-    controllers =
-        [ startPage ThreadsAction
-        -- Generator Marker
-        , parseRoute @TopicsController
-        , parseRoute @CommentsController
-        , parseRoute @UsersController
-        , parseRoute @ThreadsController
-        , parseRoute @SessionsController
-        ]
+    controllers = webRoutes
 
 instance InitControllerContext WebApplication where
     initContext = do
