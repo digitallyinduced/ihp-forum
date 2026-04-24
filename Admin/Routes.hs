@@ -7,27 +7,30 @@ import Admin.Types
 
 -- URLs match the legacy AutoRoute shape exactly — the /admin/ prefix
 -- comes from AutoRoute's module-based prefixing, so we spell it out.
+-- Each ?key suffix declares the query param that carries the record
+-- field's value, preserving AutoRoute's /admin/ShowAdmin?adminId=<uuid>
+-- URL shape.
 [routes|adminRoutes
 -- Admins
-GET    /admin/Admins              AdminsAction
-GET    /admin/NewAdmin            NewAdminAction
-POST   /admin/CreateAdmin         CreateAdminAction
-GET    /admin/ShowAdmin           ShowAdminAction
-GET    /admin/EditAdmin           EditAdminAction
-POST   /admin/UpdateAdmin         UpdateAdminAction
-DELETE /admin/DeleteAdmin         DeleteAdminAction
+GET    /admin/Admins                     AdminsAction
+GET    /admin/NewAdmin                   NewAdminAction
+POST   /admin/CreateAdmin                CreateAdminAction
+GET    /admin/ShowAdmin?adminId          ShowAdminAction
+GET    /admin/EditAdmin?adminId          EditAdminAction
+POST   /admin/UpdateAdmin?adminId        UpdateAdminAction
+DELETE /admin/DeleteAdmin?adminId        DeleteAdminAction
 
 -- User badges
-GET    /admin/UserBadges          UserBadgesAction
-GET    /admin/NewUserBadge        NewUserBadgeAction
-POST   /admin/CreateUserBadge     CreateUserBadgeAction
-GET    /admin/ShowUserBadge       ShowUserBadgeAction
-GET    /admin/EditUserBadge       EditUserBadgeAction
-POST   /admin/UpdateUserBadge     UpdateUserBadgeAction
-DELETE /admin/DeleteUserBadge     DeleteUserBadgeAction
+GET    /admin/UserBadges                 UserBadgesAction
+GET    /admin/NewUserBadge               NewUserBadgeAction
+POST   /admin/CreateUserBadge            CreateUserBadgeAction
+GET    /admin/ShowUserBadge?userBadgeId  ShowUserBadgeAction
+GET    /admin/EditUserBadge?userBadgeId  EditUserBadgeAction
+POST   /admin/UpdateUserBadge?userBadgeId UpdateUserBadgeAction
+DELETE /admin/DeleteUserBadge?userBadgeId DeleteUserBadgeAction
 
 -- Admin login
-GET    /admin/NewSession          NewSessionAction
-POST   /admin/CreateSession       CreateSessionAction
-DELETE /admin/DeleteSession       DeleteSessionAction
+GET    /admin/NewSession                 NewSessionAction
+POST   /admin/CreateSession              CreateSessionAction
+DELETE /admin/DeleteSession              DeleteSessionAction
 |]
