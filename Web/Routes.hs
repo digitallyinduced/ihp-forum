@@ -1,50 +1,51 @@
 module Web.Routes where
 import IHP.RouterPrelude
 import IHP.Router.DSL (routes)
-import IHP.Router.Capture (renderCapture)
+import IHP.Router.Capture (renderCapture, parseCapture)
 import Generated.Types
 import Web.Types
 
+-- URLs match the legacy AutoRoute shapes exactly: the Show/Update/Delete
+-- actions render as /ShowThread?threadId=<uuid> etc. via query-string
+-- capture. Existing deep links, search indexes, and third-party callers
+-- keep working.
 [routes|webRoutes
--- Homepage
-GET    /                                              ThreadsAction
-
 -- Threads
-GET    /threads                                       ThreadsAction
-GET    /threads/new                                   NewThreadAction
-POST   /threads                                       CreateThreadAction
-GET    /threads/{threadId}                            ShowThreadAction
-GET    /threads/{threadId}/edit                       EditThreadAction
-PATCH  /threads/{threadId}                            UpdateThreadAction
-DELETE /threads/{threadId}                            DeleteThreadAction
+GET    /Threads                   ThreadsAction
+GET    /NewThread                 NewThreadAction
+POST   /CreateThread              CreateThreadAction
+GET    /ShowThread                ShowThreadAction
+GET    /EditThread                EditThreadAction
+POST   /UpdateThread              UpdateThreadAction
+DELETE /DeleteThread              DeleteThreadAction
 
 -- Topics
-GET    /topics                                        TopicsAction
-GET    /topics/new                                    NewTopicAction
-POST   /topics                                        CreateTopicAction
-GET    /topics/{topicId}                              ShowTopicAction
-GET    /topics/{topicId}/edit                         EditTopicAction
-PATCH  /topics/{topicId}                              UpdateTopicAction
-DELETE /topics/{topicId}                              DeleteTopicAction
+GET    /Topics                    TopicsAction
+GET    /NewTopic                  NewTopicAction
+POST   /CreateTopic               CreateTopicAction
+GET    /ShowTopic                 ShowTopicAction
+GET    /EditTopic                 EditTopicAction
+POST   /UpdateTopic               UpdateTopicAction
+DELETE /DeleteTopic               DeleteTopicAction
 
--- Comments (nested under threads for NewComment)
-GET    /threads/{threadId}/comments/new               NewCommentAction
-POST   /comments                                      CreateCommentAction
-GET    /comments/{commentId}                          ShowCommentAction
-GET    /comments/{commentId}/edit                     EditCommentAction
-PATCH  /comments/{commentId}                          UpdateCommentAction
-DELETE /comments/{commentId}                          DeleteCommentAction
+-- Comments
+GET    /NewComment                NewCommentAction
+POST   /CreateComment             CreateCommentAction
+GET    /ShowComment               ShowCommentAction
+GET    /EditComment               EditCommentAction
+POST   /UpdateComment             UpdateCommentAction
+DELETE /DeleteComment             DeleteCommentAction
 
 -- Users
-GET    /users/new                                     NewUserAction
-POST   /users                                         CreateUserAction
-GET    /users/{userId}                                ShowUserAction
-GET    /users/{userId}/edit                           EditUserAction
-PATCH  /users/{userId}                                UpdateUserAction
-DELETE /users/{userId}                                DeleteUserAction
+GET    /NewUser                   NewUserAction
+POST   /CreateUser                CreateUserAction
+GET    /ShowUser                  ShowUserAction
+GET    /EditUser                  EditUserAction
+POST   /UpdateUser                UpdateUserAction
+DELETE /DeleteUser                DeleteUserAction
 
--- Sessions (login)
-GET    /sessions/new                                  NewSessionAction
-POST   /sessions                                      CreateSessionAction
-DELETE /sessions                                      DeleteSessionAction
+-- Sessions
+GET    /NewSession                NewSessionAction
+POST   /CreateSession             CreateSessionAction
+DELETE /DeleteSession             DeleteSessionAction
 |]

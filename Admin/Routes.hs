@@ -1,31 +1,33 @@
 module Admin.Routes where
 import IHP.RouterPrelude
 import IHP.Router.DSL (routes)
-import IHP.Router.Capture (renderCapture)
+import IHP.Router.Capture (renderCapture, parseCapture)
 import Generated.Types
 import Admin.Types
 
+-- URLs match the legacy AutoRoute shape exactly — the /admin/ prefix
+-- comes from AutoRoute's module-based prefixing, so we spell it out.
 [routes|adminRoutes
 -- Admins
-GET    /admin/admins                                  AdminsAction
-GET    /admin/admins/new                              NewAdminAction
-POST   /admin/admins                                  CreateAdminAction
-GET    /admin/admins/{adminId}                        ShowAdminAction
-GET    /admin/admins/{adminId}/edit                   EditAdminAction
-PATCH  /admin/admins/{adminId}                        UpdateAdminAction
-DELETE /admin/admins/{adminId}                        DeleteAdminAction
+GET    /admin/Admins              AdminsAction
+GET    /admin/NewAdmin            NewAdminAction
+POST   /admin/CreateAdmin         CreateAdminAction
+GET    /admin/ShowAdmin           ShowAdminAction
+GET    /admin/EditAdmin           EditAdminAction
+POST   /admin/UpdateAdmin         UpdateAdminAction
+DELETE /admin/DeleteAdmin         DeleteAdminAction
 
 -- User badges
-GET    /admin/user-badges                             UserBadgesAction
-GET    /admin/user-badges/new                         NewUserBadgeAction
-POST   /admin/user-badges                             CreateUserBadgeAction
-GET    /admin/user-badges/{userBadgeId}               ShowUserBadgeAction
-GET    /admin/user-badges/{userBadgeId}/edit          EditUserBadgeAction
-PATCH  /admin/user-badges/{userBadgeId}               UpdateUserBadgeAction
-DELETE /admin/user-badges/{userBadgeId}               DeleteUserBadgeAction
+GET    /admin/UserBadges          UserBadgesAction
+GET    /admin/NewUserBadge        NewUserBadgeAction
+POST   /admin/CreateUserBadge     CreateUserBadgeAction
+GET    /admin/ShowUserBadge       ShowUserBadgeAction
+GET    /admin/EditUserBadge       EditUserBadgeAction
+POST   /admin/UpdateUserBadge     UpdateUserBadgeAction
+DELETE /admin/DeleteUserBadge     DeleteUserBadgeAction
 
 -- Admin login
-GET    /admin/sessions/new                            NewSessionAction
-POST   /admin/sessions                                CreateSessionAction
-DELETE /admin/sessions                                DeleteSessionAction
+GET    /admin/NewSession          NewSessionAction
+POST   /admin/CreateSession       CreateSessionAction
+DELETE /admin/DeleteSession       DeleteSessionAction
 |]
